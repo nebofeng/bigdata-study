@@ -1,4 +1,4 @@
-package com.nebo.homework.kafka;
+package com.nebo.homework.kafka.an1;
 
 import kafka.consumer.ConsumerIterator;
 import kafka.consumer.KafkaStream;
