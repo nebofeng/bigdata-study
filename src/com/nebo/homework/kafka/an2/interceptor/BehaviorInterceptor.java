@@ -1,13 +1,16 @@
 package com.nebo.homework.kafka.an2.interceptor;
 
-import com.djt.model.UserBehaviorRequestModel;
-import com.djt.utils.JSONUtil;
-import com.google.common.collect.Lists;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.flume.Context;
 import org.apache.flume.Event;
 import org.apache.flume.interceptor.Interceptor;
 
-import java.util.List;
+import com.google.common.collect.Lists;
+import com.nebo.homework.kafka.an2.model.UserBehaviorRequestModel;
+import com.nebo.homework.kafka.an2.utils.JSONUtil;
 
 /**
  * Created by John on 2017/4/25.
@@ -27,7 +30,18 @@ public class BehaviorInterceptor implements Interceptor
         }
 
         long userId = 0;
-
+         String  value = new String(event.getBody()) ;
+        String key =null;
+		 //获取uid,生产者推送
+		 String regex = ":(\\\\d+|\\w+)";
+		 Pattern p = Pattern.compile(regex);
+		 Matcher m =p.matcher(value);
+		  if(m.find()) {			  
+			  key =  m.group(1).toString();
+			  
+		  }
+		 
+		 
         //解析日志
         try{
             UserBehaviorRequestModel model = JSONUtil.json2Object(new String(event.getBody()),UserBehaviorRequestModel.class);
