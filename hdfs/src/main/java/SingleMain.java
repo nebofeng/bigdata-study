@@ -44,7 +44,7 @@ public class SingleMain {
     public static void main(String[] args)  throws IOException, URISyntaxException {
 
 
-       // CreateFile("hdfs://139.199.172.112:9000/home/data","E:\\CodeDocument\\20180626test\\data_log.txt.txt");
+     //  CreateFile("hdfs://139.199.172.112:9000/home/data/CodeDocument/20180626test1/1 (2).txt","E:\\CodeDocument\\20180626test\\1 (2).txt");
 
         String filePath = "E:\\CodeDocument\\20180626test";
 
@@ -63,19 +63,22 @@ public class SingleMain {
 
         for(int i=0;i<moreSize;i++){
 
-            exe.submit(new MyThread(fileArrayList.subList(start,start+threadDealSize+1)));
+            MyThread newThread = new MyThread(fileArrayList.subList(start,start+threadDealSize+1));
+            newThread.start();
+         //   exe.submit(new MyThread(fileArrayList.subList(start,start+threadDealSize+1)));
             start = start+threadDealSize+1;
         }
         for(int i=0;i<coreSize-moreSize;i++){
-
-            exe.submit(new MyThread(fileArrayList.subList(start,start+threadDealSize)));
+            MyThread newThread = new MyThread(fileArrayList.subList(start,start+threadDealSize));
+            newThread.start();
+          //  exe.submit(new MyThread(fileArrayList.subList(start,start+threadDealSize)));
             start= start+threadDealSize;
         }
 
     }
 
 
-    static class MyThread  implements    Runnable {
+      static class MyThread  extends     Thread {
         List<File> file ;
         MyThread(List<File> file){
             this.file=file;
@@ -84,17 +87,16 @@ public class SingleMain {
             for(int i=0;i<file.size();i++){
                 try {
 
-
                     if(file.get(i).isDirectory()){
-                        String   dst ="hdfs://139.199.172.112:9000/home/"+file.get(i).getAbsolutePath().replace("\\","/");
+                        String   dst ="hdfs://139.199.172.112:9000/home/"+file.get(i).getAbsolutePath().replace("\\","/").replace("E:/","");
                         if(!fs.exists(new Path(dst))){
                             fs.mkdirs(new Path(dst));
                         }
                     }else{
-                        int j=file.get(i).getAbsolutePath().lastIndexOf("\\");
-                        System.out.println("位置j"+"==================="+j);
-                        String   dst ="hdfs://139.199.172.112:9000/home/"+(file.get(i).getAbsolutePath().substring(0,j)).replace("\\","/");
-                        System.out.println(dst+"===================");
+//                        int j=file.get(i).getAbsolutePath().lastIndexOf("\\");
+//                        System.out.println("位置j"+"==================="+j);
+                        String   dst ="hdfs://139.199.172.112:9000/home/"+file.get(i).getAbsolutePath().replace("\\","/").replace("E:/","");
+
                         System.out.println(dst+"target "+file.get(i).getAbsolutePath()+"source=");
                         CreateFile(dst,file.get(i).getAbsolutePath());
 
@@ -127,7 +129,7 @@ public class SingleMain {
         }
     }
 
-    public static void CreateFile(String dst ,String src) throws IOException {
+    public static  void CreateFile(String dst ,String src) throws IOException {
 
         Path dstPath = new Path(dst);//目标路径
         FSDataOutputStream outputStream = fs.create(dstPath);
@@ -157,14 +159,14 @@ public class SingleMain {
                 e.printStackTrace();
             }
         }
-        if (fs != null) {
-            try {
-                fs.closeAll();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
+//        if (fs != null) {
+//            try {
+//                fs.closeAll();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//        }
 
     }
 
