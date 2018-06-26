@@ -43,12 +43,7 @@ public class SingleMain {
 
     public static void main(String[] args)  throws IOException, URISyntaxException {
 
-
-     //  CreateFile("hdfs://139.199.172.112:9000/home/data/CodeDocument/20180626test1/1 (2).txt","E:\\CodeDocument\\20180626test\\1 (2).txt");
-
         String filePath = "E:\\CodeDocument\\20180626test";
-
-
         List<File>  fileArrayList = new ArrayList<File>();
         int  coreSize = 5;
         ExecutorService exe = Executors.newFixedThreadPool(coreSize);
@@ -78,7 +73,47 @@ public class SingleMain {
     }
 
 
-      static class MyThread  extends     Thread {
+    public static  void CreateFile(String dst ,String src) throws IOException {
+
+        Path dstPath = new Path(dst);//目标路径
+        FSDataOutputStream outputStream = fs.create(dstPath);
+
+        FileInputStream fis = null;
+        fis = new FileInputStream(src);
+
+        byte[] buff = new byte[1024];
+        int readCount = 0;
+        readCount = fis.read(buff);
+        while (readCount != -1) {
+            outputStream.write(buff, 0, readCount);
+            readCount = fis.read(buff);
+        }
+        if (fis != null) {
+            try {
+                fis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (outputStream != null) {
+            try {
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+//        if (fs != null) {  //避免fs关闭的时候 ，线程还在执行 。所以这里不手动关闭。
+//            try {
+//                fs.closeAll();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//        }
+
+    }
+
+    static class MyThread  extends  Thread {
         List<File> file ;
         MyThread(List<File> file){
             this.file=file;
@@ -93,10 +128,7 @@ public class SingleMain {
                             fs.mkdirs(new Path(dst));
                         }
                     }else{
-//                        int j=file.get(i).getAbsolutePath().lastIndexOf("\\");
-//                        System.out.println("位置j"+"==================="+j);
                         String   dst ="hdfs://139.199.172.112:9000/home/"+file.get(i).getAbsolutePath().replace("\\","/").replace("E:/","");
-
                         System.out.println(dst+"target "+file.get(i).getAbsolutePath()+"source=");
                         CreateFile(dst,file.get(i).getAbsolutePath());
 
@@ -128,48 +160,5 @@ public class SingleMain {
             //上传文件
         }
     }
-
-    public static  void CreateFile(String dst ,String src) throws IOException {
-
-        Path dstPath = new Path(dst);//目标路径
-        FSDataOutputStream outputStream = fs.create(dstPath);
-
-        FileInputStream fis = null;
-        fis = new FileInputStream(src);
-
-        byte[] buff = new byte[1024];
-        int readCount = 0;
-        readCount = fis.read(buff);
-        while (readCount != -1) {
-            outputStream.write(buff, 0, readCount);
-            readCount = fis.read(buff);
-        }
-
-        if (fis != null) {
-            try {
-                fis.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        if (outputStream != null) {
-            try {
-                outputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-//        if (fs != null) {
-//            try {
-//                fs.closeAll();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//        }
-
-    }
-
-
 
 }
