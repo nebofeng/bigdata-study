@@ -20,6 +20,9 @@ import java.util.concurrent.Executors;
 public class SingleMain {
 
     public static final String hdfsPath = "hdfs://10.0.0.200:8020";
+
+    public static String  uploadPreHdfs = null;
+    public static  String srcFolderNameSpace=null;
     //static Path uploadPath = new Path(hdfsPath + "/home");
    // Path sourcePath = new Path("E:\\CodeDocument\\20180626test");
     static Configuration conf = new Configuration();
@@ -39,43 +42,43 @@ public class SingleMain {
         }
     }
 
-
+    /**
+     * 参数传递 ： 第一个是类名，第二个是线程数。第三个是上传的目录 ， hdfs前缀， 第四个是本地文件所在目录 。
+     * @param args
+     * @throws IOException
+     * @throws URISyntaxException
+     */
     public static void main(String[] args) throws IOException, URISyntaxException {
-        //  CreateFile(uploadPath+"/13.txt","E:\\CodeDocument\\20180626test\\1.txt");
-        String uploadHdfs = "";
-        String uploadPath = "";
-
-        long startTime=System.currentTimeMillis();   //获取开始时间
-        String filePath = "/home/nebo/sdk_ros_ir";
-        int coreSize;
-        if(args[0]==null){
-            System.out.println("输入错误。请输出线程数目 ，p：当总文件个数小于 线程个数的时候。 线程个数为文件个数 。");
+        if(args.length!=4){
+            System.out.println("参数输入错误 ： 1.类名 ，2. 线程数目 ， 3 ， hdfs的目录，4 ，本地目录（仅上传本地目录的子目录 ）");
         }
-          coreSize=  Integer.parseInt(args[0]);//Runtime.getRuntime().availableProcessors()*2+1;//io密集的 程序为2n+1 ,n为 cpu个数 ，cpu密集则为 n+1
+        //思考： 本地目录为相对路径，本地为绝对路径 的两种情况。
+
+         uploadPreHdfs =  args[2].trim();//hdfs前缀目录
+        File srcFolder = new File(args[3]);
+         srcFolderNameSpace = srcFolder.getCanonicalPath();//获取绝对路径 ，该路径后面的文件整体上上传到hdfs的目录下面 。
+        String filePath = srcFolderNameSpace;
+        long startTime=System.currentTimeMillis();   //获取开始时间
+
+        int coreSize;
+        coreSize=  Integer.parseInt(args[1]);//Runtime.getRuntime().availableProcessors()*2+1;//io密集的 程序为2n+1 ,n为 cpu个数 ，cpu密集则为 n+1
             // n*（x+y）/x  本机计算时间为x ，等待时间为y  ;
 
-
         List<File> fileArrayList = new ArrayList<File>();
-
         ExecutorService exe = Executors.newFixedThreadPool(coreSize);
         fileArrayList = SingleGetFilList.getFileList(filePath);
         if (fileArrayList.size() < coreSize) {
             coreSize = fileArrayList.size();
         }
-
-        System.out.println("线程个数： ======="+coreSize+"        文件个数 ：====" +fileArrayList.size());
+       System.out.println("线程个数： ======="+coreSize+"        文件个数 ：====" +fileArrayList.size());
         int threadDealSize = fileArrayList.size() / coreSize;//不会等于零 。文件数目不会小于 。
         int moreSize = fileArrayList.size() % coreSize; //剩余不够平均分配的条件数据。
         int start = 0;
         for (int i = 0; i < moreSize; i++) {
-//             MyThread newThread = new MyThread(fileArrayList.subList(start,start+threadDealSize+1));
-//            newThread.start();
             exe.submit(new MyThread(fileArrayList.subList(start, start + threadDealSize + 1)));
             start = start + threadDealSize + 1;
         }
         for (int i = 0; i < coreSize - moreSize; i++) {
-//            MyThread newThread = new MyThread(fileArrayList.subList(start,start+threadDealSize));
-//            newThread.start();
             exe.submit(new MyThread(fileArrayList.subList(start, start + threadDealSize)));
             start = start + threadDealSize;
         }
@@ -233,15 +236,15 @@ public class SingleMain {
 
             //linux 文件 目录，  /home/nebo/sdk_ros_ir/
          //   src.getCanonicalPath()
-            String prNameSpace = src.getAbsolutePath().split("/")[3];
-            dst = dst+"/home/nebo/logdata/"+prNameSpace+nameSpace+src.getName();//路径+文件名
+
+            //文件本地目录 的前缀 。这里因为是已经处理过的log文件再次上传。所以指定目录的层次  。
+            String prNameSpace = src.getAbsolutePath().split("/")[4];
+            dst = dst+prNameSpace+nameSpace+src.getName();//路径+文件名
 
 
 
             Path dstPath = new Path(dst);//目标路径
             FSDataOutputStream outputStream = fs.create(dstPath);
-            //outputStream.write("开始处理===》start+\r\n".getBytes());
-            //已知log文本仅有一行。这里暂时不做修改。
 
             String line = null;
             BufferedReader oldBf = new BufferedReader(new FileReader(src));
@@ -261,8 +264,11 @@ public class SingleMain {
                     e.printStackTrace();
                 }
             }
-        } else {//是个文件夹 。直接创建文件夹
+        } else if(src.isDirectory()){//是个文件夹 。直接创建文件夹
+            dst = dst+src.getAbsolutePath().split(srcFolderNameSpace)[1];
             if (!fs.exists(new Path(dst))) {
+                //文件夹创建的目录在 nebo后面 。 /home/nebo/sdk_ros_ir/2018/05/23  hdfs的目录是 ： home/nebo/logdata/sdk_ros_ir/
+                //
                 fs.mkdirs(new Path(dst));
             }
         }
@@ -287,7 +293,7 @@ public class SingleMain {
 //                        }
 //                    }else{
                     //   String   dst =uploadPath+"/"+file.get(i).getAbsolutePath().replace("\\","/").replace("E:/","");
-                    CreateFile2(hdfsPath, file.get(i));
+                    CreateFile2(hdfsPath+uploadPreHdfs, file.get(i));
 //                    }
                 } catch (IOException e) {
                     e.printStackTrace();
