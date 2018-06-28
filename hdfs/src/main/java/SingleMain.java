@@ -74,17 +74,32 @@ public class SingleMain {
         int threadDealSize = fileArrayList.size() / coreSize;//不会等于零 。文件数目不会小于 。
         int moreSize = fileArrayList.size() % coreSize; //剩余不够平均分配的条件数据。
         int start = 0;
+
         for (int i = 0; i < moreSize; i++) {
-            exe.submit(new MyThread(fileArrayList.subList(start, start + threadDealSize + 1)));
-            start = start + threadDealSize + 1;
+
+            exe.submit(new MyThread(fileArrayList.subList(start,  start+threadDealSize+1 )));
+            System.out.println("该线程 ==="+"start ="+start +"end ==" +(start+threadDealSize+1));
+            start =start+threadDealSize+1;
         }
+
         for (int i = 0; i < coreSize - moreSize; i++) {
             exe.submit(new MyThread(fileArrayList.subList(start, start + threadDealSize)));
+            System.out.println("该线程 ==="+"start ="+start +"end ==" +(start+threadDealSize));
             start = start + threadDealSize;
         }
         exe.shutdown();
-        long endTime=System.currentTimeMillis(); //获取结束时间
+        long endTime=System.currentTimeMillis();
+        while(!exe.isTerminated()){
+             endTime=System.currentTimeMillis(); //获取结束时间
+
+        };
         System.out.println("多线程程序运行时间： "+(endTime-startTime)+"ms");
+        //疑问。 按照道理。执行到这里 。程序应该是全部执行完成。为什么要等很久才会退出 。
+        //System.out.print("-");
+
+
+
+
     }
 
 
@@ -242,28 +257,33 @@ public class SingleMain {
             dst = dst+prNameSpace+nameSpace+src.getName();//路径+文件名
 
 
-
             Path dstPath = new Path(dst);//目标路径
-            FSDataOutputStream outputStream = fs.create(dstPath);
+            FSDataOutputStream outputStream = null;
+            if(!fs.exists(dstPath)){
+                outputStream=  fs.create(dstPath);
+                String line = null;
+                BufferedReader oldBf = new BufferedReader(new FileReader(src));
+                while ((line = oldBf.readLine()) != null) {
+                    ///对line进行处理 ，
+                    outputStream.write((new String(line).replace("未处理", "weichuli") + "\r\n").getBytes());
 
-            String line = null;
-            BufferedReader oldBf = new BufferedReader(new FileReader(src));
-            while ((line = oldBf.readLine()) != null) {
-                ///对line进行处理 ，
-                outputStream.write((new String(line).replace("未处理", "weichuli") + "\r\n").getBytes());
-
+                }
+                oldBf.close();
+                //   outputStream.write("结束处理===》end".getBytes());
+                //此时的流程。先读取文件内容 。然后根据内容设置文件目录 。在读取内容 。 此时sb是内容的字符串形式 。
             }
-            oldBf.close();
-         //   outputStream.write("结束处理===》end".getBytes());
-            //此时的流程。先读取文件内容 。然后根据内容设置文件目录 。在读取内容 。 此时sb是内容的字符串形式 。
+
 
             if (outputStream != null) {
                 try {
+                    outputStream.flush();
                     outputStream.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
+
+
         } else if(src.isDirectory()){//是个文件夹 。直接创建文件夹
             dst = dst+src.getAbsolutePath().split(srcFolderNameSpace)[1];
             if (!fs.exists(new Path(dst))) {
