@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.nebo</groupId>
-	<artifactId>hadoop001</artifactId>
+	<artifactId>hadoop_study</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
