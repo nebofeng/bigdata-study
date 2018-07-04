@@ -44,7 +44,7 @@
 			<groupId>org.apache.hbase</groupId>
 			<artifactId>hbase-client</artifactId>
 		</dependency>
-		<version>0.98.11-hadoop2</version>
+
 		<dependency>
 			<groupId>redis.clients</groupId>
 			<artifactId>jedis</artifactId>
