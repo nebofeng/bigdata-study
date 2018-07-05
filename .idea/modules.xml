@@ -5,7 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/hadoop/hadoop.iml" filepath="$PROJECT_DIR$/hadoop/hadoop.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/hadoop_study.iml" filepath="$PROJECT_DIR$/.idea/hadoop_study.iml" />
       <module fileurl="file://$PROJECT_DIR$/hdfs/hdfs.iml" filepath="$PROJECT_DIR$/hdfs/hdfs.iml" />
-
+      <module fileurl="file://$PROJECT_DIR$/hive/hive.iml" filepath="$PROJECT_DIR$/hive/hive.iml" />
     </modules>
   </component>
 </project>

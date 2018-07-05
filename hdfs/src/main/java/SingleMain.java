@@ -23,8 +23,6 @@ public class SingleMain {
 
     public static String  uploadPreHdfs = null;
     public static  String srcFolderNameSpace=null;
-    //static Path uploadPath = new Path(hdfsPath + "/home");
-   // Path sourcePath = new Path("E:\\CodeDocument\\20180626test");
     static Configuration conf = new Configuration();
     static URI uri;
     static FileSystem fs;
@@ -54,7 +52,7 @@ public class SingleMain {
         }
         //思考： 本地目录为相对路径，本地为绝对路径 的两种情况。
 
-         uploadPreHdfs =  args[2].trim();//hdfs前缀目录
+        uploadPreHdfs =  args[2].trim();//hdfs前缀目录
         File srcFolder = new File(args[3]);
          srcFolderNameSpace = srcFolder.getCanonicalPath();//获取绝对路径 ，该路径后面的文件整体上上传到hdfs的目录下面 。
         String filePath = srcFolderNameSpace;
