@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.apache.hbase:hbase-client:unknown">
+    <CLASSES>
+      <root url="jar://D:/CodeTools/apache-maven-3.5.4-bin_home/rep/org/apache/hbase/hbase-client/unknown/hbase-client-unknown.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://D:/CodeTools/apache-maven-3.5.4-bin_home/rep/org/apache/hbase/hbase-client/unknown/hbase-client-unknown-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://D:/CodeTools/apache-maven-3.5.4-bin_home/rep/org/apache/hbase/hbase-client/unknown/hbase-client-unknown-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
