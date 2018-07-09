@@ -1,5 +1,4 @@
-import java.io.IOException;
-
+import main.mrjoin.Temperature;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
@@ -7,6 +6,8 @@ import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mrunit.mapreduce.MapDriver;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.IOException;
 
 public class TemperatureMapperTest {
 	

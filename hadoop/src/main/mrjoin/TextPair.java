@@ -1,10 +1,11 @@
-import java.io.DataInput;
-
-import java.io.DataOutput;
-import java.io.IOException;
+package main.mrjoin;
 
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.WritableComparable;
+
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
 public class TextPair implements WritableComparable<TextPair> {
     private    Text first;//Text 类型的实例变量 first
     private    Text second;//Text 类型的实例变量 second

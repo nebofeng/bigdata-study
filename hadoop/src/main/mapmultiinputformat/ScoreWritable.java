@@ -1,8 +1,10 @@
+package main.mapmultiinputformat;
+
+import org.apache.hadoop.io.WritableComparable;
+
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-
-import org.apache.hadoop.io.WritableComparable;
 /**
 * 学习成绩读写类
 * 数据格式参考：19020090017 小讲 90 99 100 89 95
@@ -45,7 +47,7 @@ public class ScoreWritable implements WritableComparable< Object > {
     public float getChemistry() {
         return Chemistry;
     }
-    @Override
+
     public void readFields(DataInput in) throws IOException {
         Chinese = in.readFloat();
         Math = in.readFloat();
@@ -53,7 +55,7 @@ public class ScoreWritable implements WritableComparable< Object > {
         Physics = in.readFloat();
         Chemistry = in.readFloat();
     }
-    @Override
+
     public void write(DataOutput out) throws IOException {
         out.writeFloat(Chinese);
         out.writeFloat(Math);
@@ -61,7 +63,7 @@ public class ScoreWritable implements WritableComparable< Object > {
         out.writeFloat(Physics);
         out.writeFloat(Chemistry);
     }
-    @Override
+
     public int compareTo(Object o) {
         return 0;
     }
