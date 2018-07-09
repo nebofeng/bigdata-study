@@ -1,15 +1,15 @@
 package main.mrjoin;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import main.mrjoin.Anagram.AnagramMapper;
+import main.mrjoin.Anagram.AnagramReducer;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mrunit.mapreduce.ReduceDriver;
 import org.junit.Test;
 
-import com.nebo.hadoop.Anagram.AnagramMapper;
-import com.nebo.hadoop.Anagram.AnagramReducer;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class SortTest {
 	
