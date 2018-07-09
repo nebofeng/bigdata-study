@@ -1,5 +1,4 @@
-import java.io.IOException;
-
+package main.mapmultiinputformat;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;
@@ -12,6 +11,8 @@ import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.FileSplit;
 import org.apache.hadoop.util.LineReader;
+
+import java.io.IOException;
 
  
 public class ScoreInputFormat extends FileInputFormat<Text, ScoreWritable>{

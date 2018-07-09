@@ -13,7 +13,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="hadoop" target="1.5" />
+      <module name="hadoop" target="1.7" />
       <module name="hadoop_study" target="1.7" />
       <module name="hdfs" target="1.5" />
       <module name="hive" target="1.5" />

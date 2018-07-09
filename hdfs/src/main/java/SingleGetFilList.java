@@ -43,4 +43,3 @@ public class SingleGetFilList {
 }
 
 
-//每个文件夹下面的文件。都新建一个队列。

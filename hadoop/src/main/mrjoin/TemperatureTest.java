@@ -1,7 +1,5 @@
-import java.io.IOException;
-
+import main.mrjoin.Temperature;
 import org.apache.hadoop.io.FloatWritable;
-
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
@@ -9,6 +7,8 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mrunit.mapreduce.MapReduceDriver;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.IOException;
 
 public class TemperatureTest {
 	private Mapper mapper;
