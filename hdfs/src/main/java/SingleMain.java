@@ -1,14 +1,15 @@
 
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -57,7 +58,6 @@ public class SingleMain {
          srcFolderNameSpace = srcFolder.getCanonicalPath();//获取绝对路径 ，该路径后面的文件整体上上传到hdfs的目录下面 。
         String filePath = srcFolderNameSpace;
         long startTime=System.currentTimeMillis();   //获取开始时间
-
         int coreSize;
         coreSize=  Integer.parseInt(args[1]);//Runtime.getRuntime().availableProcessors()*2+1;//io密集的 程序为2n+1 ,n为 cpu个数 ，cpu密集则为 n+1
             // n*（x+y）/x  本机计算时间为x ，等待时间为y  ;

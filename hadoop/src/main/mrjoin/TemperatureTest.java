@@ -1,4 +1,5 @@
-import main.mrjoin.Temperature;
+package main.mrjoin;
+
 import org.apache.hadoop.io.FloatWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;

@@ -1,7 +1,4 @@
-import java.io.IOException;
-import java.util.ArrayList;
-
-import java.util.List;
+package main.mrjoin;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
@@ -9,6 +6,10 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mrunit.mapreduce.ReduceDriver;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TemperatureReducerTest {
 	
