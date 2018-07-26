@@ -1,6 +1,7 @@
 */target/
-/.idea/libraries/*
+/.idea/*
 *.iml
 .idea
 /out/
+
 
