@@ -11,6 +11,7 @@
         <option value="$PROJECT_DIR$/src/com/nebo/hadoop/pom.xml" />
         <option value="$PROJECT_DIR$/hive/pom.xml" />
         <option value="$PROJECT_DIR$/hadoop/pom.xml" />
+        <option value="$PROJECT_DIR$/kafka_study/pom.xml" />
       </list>
     </option>
   </component>
