@@ -1,112 +1,83 @@
 package com.nebo.kafkastreams;
 
-
-import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.common.utils.Bytes;
 import org.apache.kafka.streams.KafkaStreams;
-import org.apache.kafka.streams.KeyValue;
+import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
-import org.apache.kafka.streams.processor.Processor;
-import org.apache.kafka.streams.processor.ProcessorContext;
-import org.apache.kafka.streams.processor.ProcessorSupplier;
-import org.apache.kafka.streams.processor.TopologyBuilder;
-import org.apache.kafka.streams.state.KeyValueIterator;
+import org.apache.kafka.streams.Topology;
+import org.apache.kafka.streams.kstream.KStream;
+import org.apache.kafka.streams.kstream.Materialized;
+import org.apache.kafka.streams.kstream.Produced;
 import org.apache.kafka.streams.state.KeyValueStore;
-import org.apache.kafka.streams.state.Stores;
 import utils.SettingUtil;
 
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Properties;
+import java.util.concurrent.CountDownLatch;
 
 public class WordCount {
 
-    private static class MyProcessorSupplier implements ProcessorSupplier<String, String> {
-
-        @Override
-        public Processor<String, String> get() {
-            return new Processor<String, String>() {
-                private ProcessorContext context;
-                private KeyValueStore<String, Integer> kvStore;
-
-                @Override
-                @SuppressWarnings("unchecked")
-                public void init(ProcessorContext context) {
-                    this.context = context;
-                   //context来设定punctuate调用周期
-                    this.context.schedule(1000);
-                    this.kvStore = (KeyValueStore<String, Integer>) context.getStateStore("Counts");
-                }
-
-                 //每条记录上执行。
-                @Override
-                public void process(String dummy, String line) {
-                    String[] words = line.toLowerCase(Locale.getDefault()).split(" ");
-
-                    for (String word : words) {
-                        Integer oldValue = this.kvStore.get(word);
-
-                        if (oldValue == null) {
-                            this.kvStore.put(word, 1);
-                        } else {
-                            this.kvStore.put(word, oldValue + 1);
-                        }
-                    }
-
-                    context.commit();
-                }
-
-                @Override
-                public void punctuate(long timestamp) {
-                    try (KeyValueIterator<String, Integer> iter = this.kvStore.all()) {
-                        System.out.println("----------- " + timestamp + " ----------- ");
-
-                        while (iter.hasNext()) {
-                            KeyValue<String, Integer> entry = iter.next();
-
-                            System.out.println("[" + entry.key + ", " + entry.value + "]");
-
-                            context.forward(entry.key, entry.value.toString());
-
-                        }
-                    }
-                }
-
-                @Override
-                public void close() {
-                    this.kvStore.close();
-                }
-            };
-        }
-    }
-
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         Properties props = new Properties();
-        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-count-processor");
-        props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, SettingUtil.getKey("","txynebo19092"));
-       // props.put(StreamsConfig.ZOOKEEPER_CONNECT_CONFIG, "localhost:2181");
-        props.put(StreamsConfig.KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
-        props.put(StreamsConfig.VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
+        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-wordcount");
+        props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, SettingUtil.getKey("","txynebo29092"));
+        props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
+        props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
 
-        // setting offset reset to earliest so that we can re-run the demo code with the same pre-loaded data
-        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+        //创建流
+        final StreamsBuilder builder = new StreamsBuilder();
 
-        TopologyBuilder builder = new TopologyBuilder();
+        KStream<String, String> source = builder.stream("streams-plaintext-input");
 
-        builder.addSource("Source", "test");
+        source.filter((key, value) -> value.contains("S"))
 
-        builder.addProcessor("Process", new MyProcessorSupplier(), "Source");
-        builder.addStateStore(Stores.create("Counts").withStringKeys().withIntegerValues().inMemory().build(), "Process");
+                .to("streams-wordcount-output2",Produced.with(Serdes.String(),Serdes.String()));
 
-        builder.addSink("Sink", "streams-wordcount-processor-output", "Process");
 
-        KafkaStreams streams = new KafkaStreams(builder, props);
-        streams.start();
+        source.flatMapValues(value -> Arrays.asList(value.toLowerCase(Locale.getDefault()).split("\\W+")))
 
-        // usually the stream application would be running forever,
-        // in this example we just let it run for some time and stop since the input data is finite.
-        Thread.sleep(50000L);
+                .groupBy(((key, value) -> value))
+//                .count()
+                .count(Materialized.<String,Long,KeyValueStore<Bytes,byte[]>>as("counts-store"))
+                .toStream()
+                .to("streams-wordcount-output", Produced.with(Serdes.String(),Serdes.Long()));
 
-        streams.close();
+        //流的源头 。拓扑结构
+        final Topology topology = builder.build();
+
+
+        System.out.println(topology.describe());
+
+        //表结构
+        final KafkaStreams streams = new KafkaStreams(topology, props);
+
+        final CountDownLatch latch = new CountDownLatch(1);
+
+        // attach shutdown handler to catch control-c
+        Runtime.getRuntime().addShutdownHook(new Thread("streams-shutdown-hook") {
+            @Override
+            public void run() {
+                streams.close();
+                latch.countDown();
+            }
+        });
+
+        try {
+            streams.start();
+            latch.await();
+        } catch (Throwable e) {
+            System.exit(1);
+        }
+        System.exit(0);
+
+
+
+
+
+
+
+
     }
-
 }
