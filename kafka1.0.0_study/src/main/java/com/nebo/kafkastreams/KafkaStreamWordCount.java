@@ -14,6 +14,9 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Properties;
 
+/**
+ * WORDCOUNT 高级DSL API
+ */
 public class KafkaStreamWordCount {
 
     private static final Logger LOG = LoggerFactory.getLogger(KafkaStreamWordCount.class);
