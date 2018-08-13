@@ -6,18 +6,21 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="common_utils" />
         <module name="hadoop" />
-        <module name="hadoop_study" />
         <module name="hdfs" />
         <module name="hive" />
+        <module name="kafka100_study" />
         <module name="kafka_study" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="common_utils" target="1.7" />
       <module name="hadoop" target="1.8" />
       <module name="hadoop_study" target="1.7" />
       <module name="hdfs" target="1.5" />
       <module name="hive" target="1.5" />
+      <module name="kafka100_study" target="1.8" />
       <module name="kafka_study" target="1.7" />
     </bytecodeTargetLevel>
   </component>
