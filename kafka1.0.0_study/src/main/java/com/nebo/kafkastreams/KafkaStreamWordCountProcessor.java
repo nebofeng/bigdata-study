@@ -21,7 +21,7 @@ import java.util.Properties;
 /**
  * WORDCOUNT process 低级API
  */
-public class KafkaStreamWordCount2 {
+public class KafkaStreamWordCountProcessor {
 
     private static class MyProcessorSupplier implements ProcessorSupplier<String, String> {
 

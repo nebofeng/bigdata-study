@@ -17,9 +17,9 @@ import java.util.Properties;
 /**
  * WORDCOUNT 高级DSL API
  */
-public class KafkaStreamWordCount {
+public class KafkaStreamWordCountDSL {
 
-    private static final Logger LOG = LoggerFactory.getLogger(KafkaStreamWordCount.class);
+    private static final Logger LOG = LoggerFactory.getLogger(KafkaStreamWordCountDSL.class);
 
     private static final String topic = "test";
 
