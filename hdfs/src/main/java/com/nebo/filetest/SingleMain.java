@@ -1,3 +1,4 @@
+package com.nebo.filetest;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataOutputStream;
@@ -20,7 +21,7 @@ import java.util.concurrent.Executors;
  */
 public class SingleMain {
 
-    public static final String hdfsPath = "hdfs://10.0.0.200:8020";
+    public static final String hdfsPath = "hdfs://139.199.172.112:9000";
 
     public static String  uploadPreHdfs = null;
     public static  String srcFolderNameSpace=null;
