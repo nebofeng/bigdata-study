@@ -1,23 +1,18 @@
 package com.nebo.kafkastreams;
 
 import org.apache.kafka.common.serialization.Serdes;
-import org.apache.kafka.common.utils.Bytes;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.KStream;
-import org.apache.kafka.streams.kstream.Materialized;
 import org.apache.kafka.streams.kstream.Produced;
-import org.apache.kafka.streams.state.KeyValueStore;
 import utils.SettingUtil;
 
-import java.util.Arrays;
-import java.util.Locale;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
-public class WordCount {
+public class WordCountDSL {
 
     public static void main(String[] args) {
         Properties props = new Properties();
@@ -31,21 +26,29 @@ public class WordCount {
 
         KStream<String, String> source = builder.stream("streams-plaintext-input");
 
-        source.filter((key, value) -> value.contains("S"))
+
+        source.foreach((key, value) ->  System.out.println("key========="+key+"value============="+value));
+
+        source.filter((key, value) -> value.contains("A"))
+
+                .to("streams-wordcount-output",Produced.with(Serdes.String(),Serdes.String()));
+
+        source.filter((key, value) -> value.contains("B"))
 
                 .to("streams-wordcount-output2",Produced.with(Serdes.String(),Serdes.String()));
 
 
-        source.flatMapValues(value -> Arrays.asList(value.toLowerCase(Locale.getDefault()).split("\\W+")))
-
-                .groupBy(((key, value) -> value))
-//                .count()
-                .count(Materialized.<String,Long,KeyValueStore<Bytes,byte[]>>as("counts-store"))
-                .toStream()
-                .to("streams-wordcount-output", Produced.with(Serdes.String(),Serdes.Long()));
+//        source.flatMapValues(value -> Arrays.asList(value.toLowerCase(Locale.getDefault()).split("\\W+")))
+//
+//                .groupBy(((key, value) -> value))
+////                .count()
+//                .count(Materialized.<String,Long,KeyValueStore<Bytes,byte[]>>as("counts-store"))
+//                .toStream()
+//                .to("streams-wordcount-output", Produced.with(Serdes.String(),Serdes.Long()));
 
         //流的源头 。拓扑结构
         final Topology topology = builder.build();
+
 
 
         System.out.println(topology.describe());

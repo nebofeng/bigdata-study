@@ -28,6 +28,7 @@ public class KafkaStreamWordCountProcessor {
         @Override
         public Processor<String, String> get() {
             return new Processor<String, String>() {
+                //TODO:contex 从哪里传递进来的。
                 private ProcessorContext context;
                 private KeyValueStore<String, Integer> kvStore;
 
@@ -55,6 +56,8 @@ public class KafkaStreamWordCountProcessor {
                         }
                     }
 
+
+                     //
                     context.commit();
                 }
 
@@ -111,5 +114,6 @@ public class KafkaStreamWordCountProcessor {
 
         streams.close();
     }
+
 
 }
