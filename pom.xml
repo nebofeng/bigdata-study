@@ -3,10 +3,14 @@
 >
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.nebo</groupId>
+	<groupId>com.nebo.hadoop_study</groupId>
 	<artifactId>hadoop_study</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<modules>
+		<module>common_utils</module>
+        <module>kafka1.0.0_study</module>
+    </modules>
+	<packaging>pom</packaging>
 
 	<name>hadoop_study</name>
 	<url>http://maven.apache.org</url>
@@ -40,10 +44,10 @@
 			<artifactId>htmlcleaner</artifactId>
 			<version>2.10</version>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.hbase</groupId>
-			<artifactId>hbase-client</artifactId>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.apache.hbase</groupId>-->
+			<!--<artifactId>hbase-client</artifactId>-->
+		<!--</dependency>-->
 
 		<dependency>
 			<groupId>redis.clients</groupId>
