@@ -3,6 +3,5 @@
 *.iml
 .idea
 /out/
-
-
+target
 
