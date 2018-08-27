@@ -62,7 +62,7 @@ public class KafkaStreamWordCountProcessor {
                 }
 
                 @Override
-                public void punctuate(long timestamp) {
+                public void punctuate(long timestamp) {//TODO:思考，指定间隔时间内调用这个方法。如果这个方法处理的时间比时间间隔还久。会怎么样。
                     try (KeyValueIterator<String, Integer> iter = this.kvStore.all()) {
                         System.out.println("----------- " + timestamp + " ----------- ");
 
