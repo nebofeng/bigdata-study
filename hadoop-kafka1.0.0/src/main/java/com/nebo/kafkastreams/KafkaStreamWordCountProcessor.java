@@ -31,6 +31,7 @@ public class KafkaStreamWordCountProcessor {
                 //TODO:contex 从哪里传递进来的。
                 private ProcessorContext context;
                 private KeyValueStore<String, Integer> kvStore;
+                volatile  int count =0;
 
                 @Override
                 @SuppressWarnings("unchecked")
@@ -62,7 +63,22 @@ public class KafkaStreamWordCountProcessor {
                 }
 
                 @Override
-                public void punctuate(long timestamp) {//TODO:思考，指定间隔时间内调用这个方法。如果这个方法处理的时间比时间间隔还久。会怎么样。
+                public void punctuate(long timestamp) {
+                    //思考，指定间隔时间内调用这个方法。如果这个方法处理的时间比时间间隔还久。会怎么样。 answer：会报错 。
+                    //org.apache.kafka.common.errors.TimeoutException: Expiring 6 record(s) for streams-count-processor-Counts-changelog-0: 30026 ms
+                    // has passed since batch creation plus linger time
+                    long nowTimeStamp= System.currentTimeMillis();
+                      count++;
+
+                    while(System.currentTimeMillis() < nowTimeStamp + timestamp*2){
+                        try {
+                            Thread.sleep(timestamp);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println("延迟操作====="+count);
+                    }
+
                     try (KeyValueIterator<String, Integer> iter = this.kvStore.all()) {
                         System.out.println("----------- " + timestamp + " ----------- ");
 
