@@ -24,15 +24,15 @@ public class KafkaProducerNew {
     }
 
     public void produce(){
-        int messgeNo =1 ;
+        int messgeNo =0 ;
         final int Count =10;
-        while(messgeNo< Count){
+        while(messgeNo< 3){
 
             String key =String.valueOf(messgeNo);
             String data=String.format("hello kafaka producer message %s",key);
             try{
 
-                Thread.sleep(1000);
+
                 producer.send(new ProducerRecord<String, String>(Topic,key ,data));
                 messgeNo++;
             }catch (Exception e){
@@ -46,6 +46,10 @@ public class KafkaProducerNew {
     }
 
     public static void main(String[] args) {
-        new KafkaProducerNew().produce();
+        for (int i=0;i<8;i++) {
+            new Thread(()->new KafkaProducerNew().produce()).start();
+
+        }
+
     }
 }
