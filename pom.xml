@@ -3,8 +3,8 @@
 >
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.nebo.hadoop-study</groupId>
-	<artifactId>hadoop-study</artifactId>
+	<groupId>com.nebo.bigdata-study</groupId>
+	<artifactId>bigdata-study</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<modules>
 		<module>hadoop-common-utils</module>
@@ -14,10 +14,11 @@
 		<module>hadoop-kafka1.0.0</module>
 		<module>hadoop-hive</module>
 
+
      </modules>
 	<packaging>pom</packaging>
 
-	<name>hadoop-study</name>
+	<name>bigdata-study</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
@@ -156,11 +157,11 @@
 			<version>0.8</version>
 		</dependency>
 		
-		<dependency>
-        <groupId>org.apache.curator</groupId>
-        <artifactId>curator-recipes</artifactId>
-        <version>2.7.0</version>
-    </dependency>
+		<!--<dependency>-->
+        <!--<groupId>org.apache.curator</groupId>-->
+        <!--<artifactId>curator-recipes</artifactId>-->
+        <!--<version>2.7.0</version>-->
+    <!--</dependency>-->
 	</dependencies>
 	<build>
 	<plugins>
