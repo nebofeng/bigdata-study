@@ -51,7 +51,11 @@ public class KafkaConsumerNew {
     }
 
     public static void main(String[] args) {
-        new KafkaConsumerNew().consume();
+
+        for (int i=0;i<3;i++) {
+            new Thread(()->new KafkaConsumerNew().consume()).start();
+
+        }
     }
 
 }
