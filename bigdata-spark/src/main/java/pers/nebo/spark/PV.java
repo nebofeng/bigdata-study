@@ -23,6 +23,19 @@ public class PV {
 		sc.setLogLevel("WARN");
 		count(sc);
  	}
+
+ 	//park 求出 最高气温
+ 	static void  year_max(JavaSparkContext sc){
+		//数据集rdd
+		JavaRDD<String>  dataRdd = sc.textFile("file:///E://tmp//a.txt");
+
+		JavaPairRDD<String ,Integer> urlAndOne = dataRdd.filter(new Function<String, Boolean>() {
+			public Boolean call(String s) throws Exception {
+				return (s.split("/").length>10);
+			}
+		}).mapToPair((String s)->{  return  new Tuple2(s.split("/")[0],"1");});
+
+	}
     //计算count
 	static void count(JavaSparkContext sc){
 		JavaRDD<String>  dataRdd = sc.textFile("file:///E://tmp//a.txt");
@@ -53,12 +66,13 @@ public class PV {
 				return (s.split("/").length>10);
 			}
 		}).mapToPair((String s)->{  return  new Tuple2(s.split("/")[0],"1");});
-//				.mapToPair(new PairFunction<String, String, Integer>(){
-//
-//			public Tuple2<String, Integer> call(String s) {
-//				return new Tuple2(s.split("/")[0],1);
-//			}
-//		}).map;
+
+
+
+
+
+
+
 		JavaPairRDD<String ,Integer> urlAndOne2 = dataRdd.filter( (String s)-> { return s.split("/").length>10; } )
 				.mapToPair(new PairFunction<String, String, Integer>(){
 
