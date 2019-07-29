@@ -51,6 +51,8 @@ public class IndexBuilder {
             Set<byte[]> keys = indexs.keySet();
             for (byte[] k : keys) {
                 ImmutableBytesWritable indexTableName = indexs.get(k);
+
+                //获取一行数据中的colf：col
                 byte[] val = value.getValue(Bytes.toBytes(familyName), k);
                 if (val != null) {
                     Put put = new Put(val);
