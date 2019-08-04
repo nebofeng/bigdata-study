@@ -22,6 +22,79 @@ import java.util.List;
  */
 public class TransformationOperationJava {
 
+
+    /**
+     * 求两个RDD的笛卡尔积
+     * 假设集合A={a, b}，集合B={0, 1, 2}，则两个集合的笛卡尔积为{(a, 0), (a, 1),
+     * (a, 2), (b, 0), (b, 1), (b, 2)}。
+     */
+    public static void cartesian(){
+        SparkConf conf = new SparkConf();
+        conf.setMaster("local");
+        conf.setAppName("distinct");
+        JavaSparkContext sc = new JavaSparkContext(conf);
+        List<Integer> lista= Arrays.asList(1,2,3);
+        List<String> listb= Arrays.asList("a","b","c");
+        JavaRDD<Integer> listaRDD = sc.parallelize(lista);
+
+
+
+        JavaRDD<String> listbRDD = sc.parallelize(listb);
+        JavaPairRDD<Integer, String> cartesian = listaRDD.cartesian(listbRDD);
+        cartesian.foreach(new VoidFunction<Tuple2<Integer,String>>() {
+
+            public void call(Tuple2<Integer, String> t) throws Exception {
+                // TODO Auto-generated method stub
+                System.out.println(t._1+ "  "+ t._2);
+            }
+
+        });
+    }
+
+    /**
+     * 去重
+     */
+    public static void distinct(){
+        SparkConf conf = new SparkConf();
+        conf.setMaster("local");
+        conf.setAppName("distinct");
+        JavaSparkContext sc = new JavaSparkContext(conf);
+        List<Integer> lista= Arrays.asList(1,2,3,4,4,5,5,6);
+        JavaRDD<Integer> listaRDD = sc.parallelize(lista);
+        listaRDD.distinct()
+                .foreach(new VoidFunction<Integer>() {
+
+                    public void call(Integer t) throws Exception {
+                        // TODO Auto-generated method stub
+                        System.out.println(t);
+                    }
+
+                });
+    }
+
+    /**
+     * 求两个rdd的交集
+     */
+    public static void Intersection() {
+        SparkConf conf = new SparkConf();
+        conf.setMaster("local");
+        conf.setAppName("Intersection");
+        JavaSparkContext sc = new JavaSparkContext(conf);
+        List<Integer> lista = Arrays.asList(1, 2, 3, 4);
+        List<Integer> listb = Arrays.asList(4, 5, 6, 7);
+        JavaRDD<Integer> listaRDD = sc.parallelize(lista);
+        JavaRDD<Integer> listbRDD = sc.parallelize(listb);
+        listaRDD.intersection(listbRDD)
+                .foreach(new VoidFunction<Integer>() {
+
+                    public void call(Integer t) throws Exception {
+                        // TODO Auto-generated method stub
+                        System.out.println(t);
+                    }
+
+                });
+    }
+
     /**
      * 求rdd并集，但是不去重
      */
