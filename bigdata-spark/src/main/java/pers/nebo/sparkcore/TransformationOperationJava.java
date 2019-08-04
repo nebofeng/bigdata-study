@@ -1,11 +1,14 @@
 package pers.nebo.sparkcore;
 
 import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.apache.spark.api.java.function.Function;
+import org.apache.spark.api.java.function.Function2;
 import org.apache.spark.api.java.function.VoidFunction;
+import scala.Tuple2;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -19,9 +22,112 @@ import java.util.List;
  */
 public class TransformationOperationJava {
 
+    public static void sortByKey(){
+        SparkConf conf = new SparkConf();
+        //本地运行，设置master为local
+        conf.setMaster("local");
+        conf.setAppName("reducebykey");
+        JavaSparkContext sc = new JavaSparkContext(conf);
+
+        List<Tuple2<String,Integer>> list = Arrays.asList(
+                new Tuple2<String,Integer>("key1",1),
+                new Tuple2<String,Integer>("key1",12),
+                new Tuple2<String,Integer>("key4",11),
+                new Tuple2<String,Integer>("key2",11),
+                new Tuple2<String,Integer>("key3",1)
+        );
+        //bykey 用到的是pairs形式元素
+        JavaPairRDD<String,Integer> listRDD =sc.parallelizePairs(list);
+
+        listRDD.sortByKey(false)
+                .foreach(
+                        new VoidFunction<Tuple2<String, Integer>>() {
+                            @Override
+                            public void call(Tuple2<String, Integer> t) throws Exception {
+                                System.out.println(t._1+"=="+t._2);
+                            }
+                        }
+                );
 
 
 
+
+    }
+
+
+
+
+
+    public static void reduceBykey(){
+        SparkConf conf = new SparkConf();
+        //本地运行，设置master为local
+        conf.setMaster("local");
+        conf.setAppName("reducebykey");
+        JavaSparkContext sc = new JavaSparkContext(conf);
+
+        List<Tuple2<String,Integer>> list = Arrays.asList(
+                new Tuple2<String,Integer>("key1",1),
+                new Tuple2<String,Integer>("key1",12),
+                new Tuple2<String,Integer>("key2",11),
+                new Tuple2<String,Integer>("key2",11),
+                new Tuple2<String,Integer>("key3",1)
+        );
+        //bykey 用到的是pairs形式元素
+        JavaPairRDD<String,Integer> listRDD =sc.parallelizePairs(list);
+
+        JavaPairRDD<String,Integer>reduceBykey=listRDD.reduceByKey(new Function2<Integer, Integer, Integer>() {
+            @Override
+            public Integer call(Integer v1, Integer v2) throws Exception {
+                return v1+v2;
+            }
+        });
+
+
+        reduceBykey.foreach(new VoidFunction<Tuple2<String, Integer>>() {
+            @Override
+            public void call(Tuple2<String, Integer> t) throws Exception {
+                System.out.println(t._1+"=="+t._2);
+            }
+        });
+
+
+
+
+    }
+
+
+
+
+    public static void groupBykey(){
+        SparkConf conf = new SparkConf();
+        //本地运行，设置master为local
+        conf.setMaster("local");
+        conf.setAppName("groupbykeytest");
+        JavaSparkContext sc = new JavaSparkContext(conf);
+
+        List<Tuple2<String,String>> list = Arrays.asList(
+                new Tuple2<String,String>("key1","value1"),
+                new Tuple2<String,String>("key1","value2"),
+                new Tuple2<String,String>("key2","value2"),
+                new Tuple2<String,String>("key2","value3"),
+                new Tuple2<String,String>("key3","value3")
+        );
+        //bykey 用到的是pairs形式元素
+        JavaPairRDD<String,String> listRDD =sc.parallelizePairs(list);
+        JavaPairRDD<String, Iterable<String>> groupBykeyRDD=listRDD.groupByKey();
+        groupBykeyRDD.foreach(
+                new VoidFunction<Tuple2<String, Iterable<String>>>() {
+                    @Override
+                    public void call(Tuple2<String, Iterable<String>> stringIterableTuple2) throws Exception {
+                        System.out.println(stringIterableTuple2._1);
+                        for(String string:stringIterableTuple2._2){
+                            System.out.println(string);
+                        }
+                    }
+                }
+        );
+
+    }
 
 
     public static void flatMap() {
@@ -107,7 +213,11 @@ public class TransformationOperationJava {
 
     public static void main(String[] args) {
 
-        filter();
+//        filter();
+//
+//        reduceBykey();
+
+        sortByKey();
     }
 
 }
