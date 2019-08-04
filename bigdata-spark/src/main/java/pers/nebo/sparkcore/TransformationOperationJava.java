@@ -10,6 +10,7 @@ import org.apache.spark.api.java.function.Function2;
 import org.apache.spark.api.java.function.VoidFunction;
 import scala.Tuple2;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -22,7 +23,85 @@ import java.util.List;
  */
 public class TransformationOperationJava {
 
+    /**
+     * repaitition其实只是coalesce的shuffle为true的简易的实现版本
+     */
 
+    public static void coalesce(){
+        SparkConf conf = new SparkConf();
+        conf.setMaster("local");
+        conf.setAppName("coalesce");
+        JavaSparkContext sc = new JavaSparkContext(conf);
+        List<Integer> list= Arrays.asList(1,2,3,4,5,6);
+        JavaRDD<Integer> listRDD = sc.parallelize(list);
+        /**N  代表的是原来的分区数
+         * M numPartitions  新的分区数
+         * shuffle  是否进行shuffle
+         */
+        listRDD.coalesce(2, true);
+        /**
+         * 1）N < M  需要将shuffle设置为true。
+         2）N > M 相差不多，N=1000 M=100  建议 shuffle=false 。
+         父RDD和子RDD是窄依赖
+         3）N >> M  比如 n=100 m=1  建议shuffle设置为true，这样性能更好。
+         设置为false，父RDD和子RDD是窄依赖，他们同在一个stage中。造成任务并行度不够，从而速度缓慢。
+         */
+    }
+
+    //repartition  coalesce  重新进行分区  窄依赖，宽依赖  shuffle
+    /**
+     * filter 过滤了以后 --partition数据量会减少
+     * 100 parition    task
+     * 100  ->  50 parition  task
+     *
+     * 这一个repartition分区，会进行shuffle操作。
+     */
+    public static void repartition(){
+        SparkConf conf = new SparkConf();
+        conf.setMaster("local");
+        conf.setAppName("repartition");
+        JavaSparkContext sc = new JavaSparkContext(conf);
+        List<Integer> list= Arrays.asList(1,2,3,4,5,6);
+        JavaRDD<Integer> listRDD = sc.parallelize(list);
+        listRDD.repartition(2)
+                .foreach(new VoidFunction<Integer>() {
+
+                    public void call(Integer t) throws Exception {
+                        System.out.println(t);
+
+                    }
+
+                });
+    }
+
+    public static void mapPartitions(){
+        SparkConf conf = new SparkConf();
+        conf.setMaster("local");
+        conf.setAppName("mapPartitions");
+        JavaSparkContext sc = new JavaSparkContext(conf);
+        List<Integer> list= Arrays.asList(1,2,3,4,5,6);
+        JavaRDD<Integer> listRDD = sc.parallelize(list, 2);// partition 1 :123  partition 2 : 4 5 6
+        listRDD.mapPartitions(new FlatMapFunction<Iterator<Integer>, String>() {
+            /**
+             * 每次处理的就是一个分区的数
+             */
+            public Iterator<String> call(Iterator<Integer> t)
+                    throws Exception {
+                ArrayList<String> list = new ArrayList<String>();
+                while(t.hasNext()){
+                    Integer i = t.next();
+                    list.add("hello "+i);
+                }
+                return list.iterator();
+            }
+        }).foreach(new VoidFunction<String>() {
+
+            public void call(String t) throws Exception {
+                System.out.println(t);
+
+            }
+        });
+    }
     /**
      * 求两个RDD的笛卡尔积
      * 假设集合A={a, b}，集合B={0, 1, 2}，则两个集合的笛卡尔积为{(a, 0), (a, 1),
@@ -31,7 +110,7 @@ public class TransformationOperationJava {
     public static void cartesian(){
         SparkConf conf = new SparkConf();
         conf.setMaster("local");
-        conf.setAppName("distinct");
+        conf.setAppName("cartesian");
         JavaSparkContext sc = new JavaSparkContext(conf);
         List<Integer> lista= Arrays.asList(1,2,3);
         List<String> listb= Arrays.asList("a","b","c");
