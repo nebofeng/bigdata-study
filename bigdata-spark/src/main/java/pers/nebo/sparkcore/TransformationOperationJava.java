@@ -22,6 +22,111 @@ import java.util.List;
  */
 public class TransformationOperationJava {
 
+    /**
+     * 求rdd并集，但是不去重
+     */
+    public static void union(){
+        SparkConf conf = new SparkConf();
+        conf.setMaster("local");
+        conf.setAppName("union");
+        JavaSparkContext sc = new JavaSparkContext(conf);
+        List<Integer> lista= Arrays.asList(1,2,3,4);
+        List<Integer> listb= Arrays.asList(4,5,6,7);
+        JavaRDD<Integer> listaRDD = sc.parallelize(lista);
+        JavaRDD<Integer> listbRDD = sc.parallelize(listb);
+        JavaRDD<Integer> union = listaRDD.union(listbRDD);
+        union.foreach(new VoidFunction<Integer>() {
+
+            public void call(Integer t) throws Exception {
+                // TODO Auto-generated method stub
+                System.out.println(t);
+            }
+
+        });
+    }
+
+
+
+    /**
+     * 这个实现根据两个要进行合并的两个RDD操作,生成一个CoGroupedRDD的实例,
+     * 这个RDD的返回结果是把相同的key中两个RDD分别进行合并操作,最后返回的RDD的value是一个Pair的实例,
+     * 这个实例包含两个Iterable的值,第一个值表示的是RDD1中相同KEY的值,第二个值表示的是RDD2中相同key的值.
+     */
+
+    public static void cogroup(){
+        SparkConf conf = new SparkConf();
+        conf.setMaster("local");
+        conf.setAppName("cogroup");
+        JavaSparkContext sc = new JavaSparkContext(conf);
+        List<Tuple2<Integer, String>> listname = Arrays.asList(
+                new Tuple2<Integer, String>(1,"东方不败"),
+                new Tuple2<Integer, String>(2,"岳不群"),
+                new Tuple2<Integer, String>(3,"令狐冲")
+        );
+
+        List<Tuple2<Integer, Integer>> listscores = Arrays.asList(
+                new Tuple2<Integer, Integer>(1,99),
+                new Tuple2<Integer, Integer>(2,80),
+                new Tuple2<Integer, Integer>(3,85),
+                new Tuple2<Integer, Integer>(1,98),
+                new Tuple2<Integer, Integer>(2,79),
+                new Tuple2<Integer, Integer>(3,84)
+        );
+        JavaPairRDD<Integer, String> listnameRDD = sc.parallelizePairs(listname);
+        JavaPairRDD<Integer, Integer> listscoresRDD = sc.parallelizePairs(listscores);
+        //<1,tuple2<"东方不败" , {99,98}>>
+        JavaPairRDD<Integer, Tuple2<Iterable<String>, Iterable<Integer>>> cogroup = listnameRDD.cogroup(listscoresRDD);
+        cogroup.foreach(new VoidFunction<Tuple2<Integer,Tuple2<Iterable<String>,Iterable<Integer>>>>() {
+
+            public void call(
+                    Tuple2<Integer, Tuple2<Iterable<String>, Iterable<Integer>>> t)
+                    throws Exception {
+                System.out.println("编号："+t._1);
+                //	Iterator<String> names = t._2._1.iterator();
+                System.out.println("名字集合："+t._2._1);
+                //	Iterator<Integer> scores = t._2._2.iterator();
+                //while
+                System.out.println("分数单"+ t._2._2);
+
+            }
+
+        });
+
+    }
+
+
+    public static void join(){
+        SparkConf conf = new SparkConf();
+        conf.setMaster("local");
+        conf.setAppName("join");
+        JavaSparkContext sc = new JavaSparkContext(conf);
+        List<Tuple2<Integer, String>> listname = Arrays.asList(
+                new Tuple2<Integer, String>(1,"东方不败"),
+                new Tuple2<Integer, String>(2,"岳不群"),
+                new Tuple2<Integer, String>(3,"令狐冲")
+        );
+
+        List<Tuple2<Integer, Integer>> listscores = Arrays.asList(
+                new Tuple2<Integer, Integer>(1,99),
+                new Tuple2<Integer, Integer>(2,80),
+                new Tuple2<Integer, Integer>(3,85)
+        );
+        JavaPairRDD<Integer, String> listnameRDD = sc.parallelizePairs(listname);
+        JavaPairRDD<Integer, Integer> listscoresRDD = sc.parallelizePairs(listscores);
+        JavaPairRDD<Integer, Tuple2<String, Integer>> join = listnameRDD.join(listscoresRDD);
+        join.foreach(new VoidFunction<Tuple2<Integer,Tuple2<String,Integer>>>() {
+
+            public void call(Tuple2<Integer, Tuple2<String, Integer>> t)
+                    throws Exception {
+                System.out.println("编号："+t._1);
+                System.out.println("姓名："+t._2._1);
+                System.out.println("分数："+t._2._2);
+
+            }
+
+        });
+    }
+
     public static void sortByKey(){
         SparkConf conf = new SparkConf();
         //本地运行，设置master为local
