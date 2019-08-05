@@ -1,5 +1,6 @@
 package pers.nebo.sparkcore;
 
+import org.apache.spark.Partitioner;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
@@ -7,10 +8,7 @@ import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.*;
 import scala.Tuple2;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * @ author fnb
@@ -20,7 +18,77 @@ import java.util.List;
  */
 public class TransformationOperationJava {
 
+    public static void repartitionAndSortWithinPartitions(){
+        SparkConf conf = new SparkConf();
+        conf.setMaster("local");
+        conf.setAppName("repartitionAndSortWithinPartitions");
+        JavaSparkContext sc = new JavaSparkContext(conf);
+        List<Integer> list= Arrays.asList(1,2,3,4,5,6,7,8);
+        JavaRDD<Integer> listRDD = sc.parallelize(list);
+        final Random random = new Random();
+        JavaPairRDD<Integer, Integer> mapToPair = listRDD.mapToPair(new PairFunction<Integer, Integer, Integer>() {
 
+            public Tuple2<Integer, Integer> call(Integer t) throws Exception {
+
+                return new Tuple2<Integer, Integer>(t,random.nextInt(10));
+            }
+        });
+
+        JavaPairRDD<Integer, Integer> repartitionAndSortWithinPartitions = mapToPair.repartitionAndSortWithinPartitions(new Partitioner() {
+
+            @Override
+            public int numPartitions() {
+
+                return 2;
+            }
+
+            @Override
+            public int getPartition(Object key) {
+
+                return key.toString().hashCode() % 2;
+            }
+        });
+
+        repartitionAndSortWithinPartitions.foreach(new VoidFunction<Tuple2<Integer,Integer>>() {
+
+            public void call(Tuple2<Integer, Integer> t) throws Exception {
+                // TODO Auto-generated method stub
+                System.out.println(t._1 + "  :  "+t._2);
+            }
+        });
+
+    }
+    public static void mapPartitionsWithIndex(){
+        SparkConf conf = new SparkConf();
+        conf.setMaster("local");
+        conf.setAppName("mapPartitionsWithIndex");
+        JavaSparkContext sc = new JavaSparkContext(conf);
+        List<Integer> list= Arrays.asList(1,2,3,4,5,6,7,8,9,10);
+        JavaRDD<Integer> listRDD = sc.parallelize(list,2);
+        listRDD.mapPartitionsWithIndex(new Function2<Integer, Iterator<Integer>, Iterator<String>>() {
+            /**
+             * index 就是分区的索引
+             */
+            public Iterator<String> call(Integer index, Iterator<Integer> iterator)
+                    throws Exception {
+                ArrayList<String> list = new ArrayList();
+                while(iterator.hasNext()){
+                    String result=	iterator.next()+ "_"+index;
+                    list.add(result);
+                }
+
+                return list.iterator();
+            }
+        }, true)
+                .foreach(new VoidFunction<String>() {
+
+                    public void call(String t) throws Exception {
+                        // TODO Auto-generated method stub
+                        System.out.println(t);
+                    }
+
+                });
+    }
 
 
     /**
