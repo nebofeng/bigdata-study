@@ -4,10 +4,7 @@ import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.api.java.function.FlatMapFunction;
-import org.apache.spark.api.java.function.Function;
-import org.apache.spark.api.java.function.Function2;
-import org.apache.spark.api.java.function.VoidFunction;
+import org.apache.spark.api.java.function.*;
 import scala.Tuple2;
 
 import java.util.ArrayList;
@@ -22,6 +19,94 @@ import java.util.List;
  * @ des : spark 算子 java 版本
  */
 public class TransformationOperationJava {
+
+
+
+
+    /**
+     * 做一个单词计数的
+     */
+
+    public static void aggregateByKey(){
+        //创建一个sparkConf对象
+        SparkConf conf = new SparkConf();
+        //如果是在本地运行那么设置setmaster参数为local
+        //如果不设置，默认就在集群模式下运行。
+        conf.setMaster("local");
+        //给任务设置一下名称。
+        conf.setAppName("aggregateByKey");
+        // ctrl + alt + o
+        //创建好了程序的入口
+        JavaSparkContext sc = new JavaSparkContext(conf);
+        //模拟一个集合，使用并行化的方式创建出来一个RDD。
+        List<String> list = Arrays.asList("you	jump","i	jump");
+        JavaRDD<String> listRDD = sc.parallelize(list);
+        //U代表的是FlatMapFunction 这个函数的返回值
+        listRDD.flatMap(new FlatMapFunction<String, String>() {
+
+            public Iterator<String> call(String t) throws Exception {
+                // TODO Auto-generated method stub
+                return Arrays.asList(t.split("\t")).iterator();
+            }
+        }).mapToPair(new PairFunction<String, String, Integer>() {
+
+            public Tuple2<String, Integer> call(String t) throws Exception {
+
+                return new Tuple2<String, Integer>(t,1);
+            }
+
+        })
+                /**
+                 * 其实reduceBykey就是aggregateByKey的简化版。 就是aggregateByKey多提供了一个函数
+                 * 类似于Mapreduce的combine操作（就在map端执行reduce的操作）
+                 *
+                 * 第一个参数代表的是每个key的初始值初始值：
+                 * 第二个是一个函数，类似于map-side的本地聚合
+                 * 第三个也是饿函数，类似于reduce的全局聚合
+                 */
+                .aggregateByKey(0, new Function2<Integer, Integer, Integer>() {
+
+                    public Integer call(Integer v1, Integer v2) throws Exception {
+                        // TODO Auto-generated method stub
+                        return v1+v2;
+                    }
+                }, new Function2<Integer, Integer, Integer>() {
+
+                    public Integer call(Integer v1, Integer v2) throws Exception {
+                        // TODO Auto-generated method stub
+                        return v1+v2;
+                    }
+                });
+
+
+    }
+
+    /**
+     * 随机采样
+     */
+    public static void sample(){
+        SparkConf conf = new SparkConf();
+        conf.setMaster("local");
+        conf.setAppName("sample");
+        JavaSparkContext sc = new JavaSparkContext(conf);
+        List<Integer> list= Arrays.asList(1,2,3,4,5,6,7,8,9,10);
+        JavaRDD<Integer> listRDD = sc.parallelize(list);
+        /**
+         * 对RDD中的集合内元素进行采样，第一个参数withReplacement是true表示有放回取样，false表示无放回。第二个参数表示比例
+         */
+        listRDD.sample(true, 0.1)
+                .foreach(new VoidFunction<Integer>() {
+
+                    public void call(Integer t) throws Exception {
+                        // TODO Auto-generated method stub
+                        System.out.println("============================");
+                        System.out.println(t);
+                    }
+
+                });
+    }
+
+
 
     /**
      * repaitition其实只是coalesce的shuffle为true的简易的实现版本
