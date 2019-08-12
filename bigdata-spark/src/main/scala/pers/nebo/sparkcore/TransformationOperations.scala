@@ -80,6 +80,10 @@ object TransformationOperations {
   }
 
 
+
+
+
+
   def sample(){
     val conf=new SparkConf().setMaster("local").setAppName("mapPartitions")
     val sc=new SparkContext(conf);
@@ -96,6 +100,9 @@ object TransformationOperations {
     val sc=new SparkContext(conf);
     val lista=Array(1,2,3);
     val listaRDD=sc.parallelize(lista);
+//    listaRDD.repartition() filter 之后，更改分组个数，
+
+//    listaRDD.coalesce(1 ， true)与 repartition（1） 是一样的
     listaRDD.mapPartitions( number => number.map { x => "hello "+x }, true)
       .foreach { result => println(result) }
   }
