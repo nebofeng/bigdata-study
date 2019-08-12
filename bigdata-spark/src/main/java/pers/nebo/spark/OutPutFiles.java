@@ -30,7 +30,7 @@ public class OutPutFiles {
             public Object call(Object v1, Object v2) {
                 return null;
             }
-        }).saveAsHadoopFile("",);
+        }).saveAsTextFile("targetfile");
 
     }
 }
