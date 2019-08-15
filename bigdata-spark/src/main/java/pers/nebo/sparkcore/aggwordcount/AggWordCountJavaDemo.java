@@ -23,7 +23,7 @@ import java.util.Random;
 public class AggWordCountJavaDemo {
 
     public static void main(String[] args) {
-        SparkConf conf =  new SparkConf();
+        SparkConf conf =  new SparkConf().setMaster("local").setAppName("aggwordcount");
         JavaSparkContext sc = new JavaSparkContext(conf);
 
          JavaPairRDD<String,Integer> javaRDD= sc.textFile("").flatMap(new FlatMapFunction<String, String>() {
