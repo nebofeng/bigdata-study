@@ -17,7 +17,7 @@ import org.apache.hadoop.hbase.CellUtil
   * @ des :
   */
 
-case class Person(ID:String,age:String,name:String)
+case class Persontmp(ID:String,age:String,name:String)
 object HbaseOperation {
   def main(args: Array[String]): Unit = {
 
@@ -38,19 +38,19 @@ object HbaseOperation {
       * 其实这个地方，如果有同学用mapreduce操作过hbase，那么这儿跟mapreduce操作hbase是一模一样的
       */
     val conf=HBaseConfiguration.create();
-    conf.set("hbase.mapreduce.inputtable", "person")
+    conf.set("hbase.mapreduce.inputtable", "Persontmp")
     conf.set("hbase.zookeeper.qurom", "hadoop1:2181")
     conf.set("zookeeper.znode.parent", "/hbase")
-    val PersonRDD= sc.newAPIHadoopRDD(conf,
+    val PersontmpRDD= sc.newAPIHadoopRDD(conf,
       classOf[TableInputFormat],
       classOf[ImmutableBytesWritable] , classOf[Result])
 
-    println("==========================count"+PersonRDD.count())
+    println("==========================count"+PersontmpRDD.count())
     /**
       * 把我们的数据封装成一个dataframe,然后注册成一张表，那么我们是不是可以用sql语句
       * 去操作hbase数据库！！！
       */
-    val pRDD=PersonRDD.map(tuple =>{
+    val pRDD=PersontmpRDD.map(tuple =>{
       val rowkey= Bytes.toString( tuple._1.get)
       val result=tuple._2
       var rowStr=rowkey+","
@@ -66,12 +66,12 @@ object HbaseOperation {
     })
 
     import sqlContext.implicits._
-    val rowPersonRDD= pRDD.map { str => str.split(",") }
-      .map { row => Person(row(0),row(1),row(2)) }
+    val rowPersontmpRDD= pRDD.map { str => str.split(",") }
+      .map { row => Persontmp(row(0),row(1),row(2)) }
 
-    val personDF= rowPersonRDD.toDF();
-    personDF.registerTempTable("person")
-    sqlContext.sql("select ID,name from person").show()
+    val PersontmpDF= rowPersontmpRDD.toDF();
+    PersontmpDF.registerTempTable("Persontmp")
+    sqlContext.sql("select ID,name from Persontmp").show()
   }
 
 
@@ -91,19 +91,19 @@ object HbaseOperation {
       * 其实这个地方，如果有同学用mapreduce操作过hbase，那么这儿跟mapreduce操作hbase是一模一样的
       */
     val conf=HBaseConfiguration.create();
-    conf.set("hbase.mapreduce.inputtable", "person")
+    conf.set("hbase.mapreduce.inputtable", "Persontmp")
     conf.set("hbase.zookeeper.qurom", "hadoop1:2181")
     conf.set("zookeeper.znode.parent", "/hbase")
-    val PersonRDD= sc.newAPIHadoopRDD(conf,
+    val PersontmpRDD= sc.newAPIHadoopRDD(conf,
       classOf[TableInputFormat],
       classOf[ImmutableBytesWritable] , classOf[Result])
 
-    println("==========================count"+PersonRDD.count())
+    println("==========================count"+PersontmpRDD.count())
     /**
       * 把我们的数据封装成一个dataframe,然后注册成一张表，那么我们是不是可以用sql语句
       * 去操作hbase数据库！！！
       */
-    val pRDD=PersonRDD.map(tuple =>{
+    val pRDD=PersontmpRDD.map(tuple =>{
       val rowkey= Bytes.toString( tuple._1.get)
       val result=tuple._2
       var rowStr=rowkey+","
@@ -118,12 +118,12 @@ object HbaseOperation {
       rowStr.substring(0, rowStr.length()-1)
     })
     import spark.implicits._
-    val rowPersonRDD= pRDD.map { str => str.split(",") }
-      .map { row => Person(row(0),row(1),row(2)) }
+    val rowPersontmpRDD= pRDD.map { str => str.split(",") }
+      .map { row => Persontmp(row(0),row(1),row(2)) }
 
-    val personDF=rowPersonRDD.toDF()
+    val PersontmpDF=rowPersontmpRDD.toDF()
 
-    personDF.registerTempTable("person")
-//    sqlContext.sql("select ID,name from person").show()
+    PersontmpDF.registerTempTable("Persontmp")
+//    sqlContext.sql("select ID,name from Persontmp").show()
   }
 }
