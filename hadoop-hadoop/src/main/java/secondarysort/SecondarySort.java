@@ -1,4 +1,4 @@
-package main.secondarysort;
+package secondarysort;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
@@ -101,7 +101,7 @@ public class SecondarySort  extends Configured implements Tool {
 		Configuration conf = new Configuration()  ;
 	 
 
-	        Job job = new Job(conf, "secondarysort");
+	        Job job = new Job(conf, "java/secondarysort");
 	        job.setJarByClass(SecondarySort.class);
 	        
 	        FileInputFormat.setInputPaths(job, new Path(args[0]));//输入路径
