@@ -5,4 +5,4 @@
 /out/
 target
 /hadoop-common-utils/src/main/resources/hostsetting.properties
-
+/bigdata-spark/src/main/resources/kafkaconfig.properties
