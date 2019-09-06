@@ -13,9 +13,11 @@
 		<module>hadoop-kafka</module>
 		<module>hadoop-kafka1.0.0</module>
 		<module>hadoop-hive</module>
+		<module>bigdata-spark</module>
+        <module>bigdata-hbase</module>
 
 
-     </modules>
+    </modules>
 	<packaging>pom</packaging>
 
 	<name>bigdata-study</name>
@@ -157,23 +159,23 @@
 			<version>0.8</version>
 		</dependency>
 		
-		<!--<dependency>-->
-        <!--<groupId>org.apache.curator</groupId>-->
-        <!--<artifactId>curator-recipes</artifactId>-->
-        <!--<version>2.7.0</version>-->
-    <!--</dependency>-->
+		<dependency>
+        <groupId>org.apache.curator</groupId>
+        <artifactId>curator-recipes</artifactId>
+        <version>2.7.0</version>
+    </dependency>
 	</dependencies>
 	<build>
-	<plugins>
-		<plugin>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-compiler-plugin</artifactId>
-			<version>2.1</version>
-			<configuration>
-				<source>1.7</source>
-				<target>1.7</target>
-			</configuration>
-		</plugin>
-	</plugins>
-</build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.1</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
