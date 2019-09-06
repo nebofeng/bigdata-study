@@ -72,7 +72,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>main.java.mrjoin.WordCount</mainClass>
+                            <mainClass>main.java.pers.nebo.mr.mrjoin.WordCount</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

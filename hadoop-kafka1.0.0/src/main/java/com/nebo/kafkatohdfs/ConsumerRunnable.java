@@ -1,6 +1,6 @@
 package com.nebo.kafkatohdfs;
 
-import com.nebo.hdfs_utils.HdfsUtils;
+import pers.nebo.hdfs.hdfs_utils.HdfsUtils;
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
