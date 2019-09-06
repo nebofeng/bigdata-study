@@ -1,4 +1,4 @@
-package main.mapmultiinputformat;
+package mapmultiinputformat;
 
 import org.apache.hadoop.io.WritableComparable;
 

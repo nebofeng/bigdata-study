@@ -1,4 +1,4 @@
-package main.javaapi;
+package javaapi;
 
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.PathFilter;
@@ -13,7 +13,7 @@ public class RegexAcceptPathFilter implements PathFilter {
 
 
     public boolean accept(Path path) {
-        // TODO Auto-generated method stub
+
         boolean flag = path.toString().matches(regex);
 
         return flag;

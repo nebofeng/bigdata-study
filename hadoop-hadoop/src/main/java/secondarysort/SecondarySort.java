@@ -84,11 +84,11 @@ public class SecondarySort  extends Configured implements Tool {
      * @throws Exception 
      */
     public static void main(String[] args) throws Exception{
-        // TODO Auto-generated method stub
+
     	// 数据输入路径 和输出路径
     			String[] args0 = {
-    					"hdfs://nebo:9000/sort/",
-    					"hdfs://nebo:9000/sort/out/"
+    					"hdfs://nebo1:9000/sort/",
+    					"hdfs://nebo1:9000/sort/out/"
     			};
     			int ec = ToolRunner.run(new Configuration(), new SecondarySort(), args0);
     			System.exit(ec);
