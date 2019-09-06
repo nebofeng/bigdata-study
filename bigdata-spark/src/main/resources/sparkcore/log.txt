@@ -1,0 +1,3 @@
+10.0.0.153#-#-#[12/Mar/2004:12:23:18-0800]#"GET /cgi-bin/mailgraph.cgi/mailgraph_3_err.png HTTP/1.1"#200#5554
+10.0.0.153#-#-#[12/Mar/2004:12:23:40-0800]#"GET /dccstats/index.html HTTP/1.1"#304#2000
+10.0.0.153#-#-#[12/Mar/2004:12:23:41-0800]#"GET /dccstats/stats-spam.1day.png HTTP/1.1"#200#2964

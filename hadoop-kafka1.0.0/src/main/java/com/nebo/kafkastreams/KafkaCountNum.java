@@ -22,7 +22,6 @@ import java.util.Properties;
 public class KafkaCountNum {
 
 
-
     private static class MyProcessorSupplier implements ProcessorSupplier<String, String> {
 
         @Override
