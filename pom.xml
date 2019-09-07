@@ -3,16 +3,15 @@
 >
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.nebo.bigdata-study</groupId>
+	<groupId>pers.nebo.bigdata-study</groupId>
 	<artifactId>bigdata-study</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<modules>
-		<module>hadoop-common-utils</module>
-        <module>hadoop-hadoop</module>
- 		<module>hadoop-hdfs</module>
-		<module>hadoop-kafka</module>
-		<module>hadoop-kafka1.0.0</module>
-		<module>hadoop-hive</module>
+		<module>bigdata-common-utils</module>
+        <module>bigdata-hadoop</module>
+		<module>bigdata-kafka</module>
+		<module>bigdata-kafka1.0.0</module>
+		<module>bigdata-hive</module>
 		<module>bigdata-spark</module>
         <module>bigdata-hbase</module>
 
@@ -28,13 +27,13 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>jdk.tools</groupId>
-			<artifactId>jdk.tools</artifactId>
-			<version>1.7</version>
-			<scope>system</scope>
-			<systemPath>${JAVA_HOME}/lib/tools.jar</systemPath>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>jdk.tools</groupId>-->
+<!--			<artifactId>jdk.tools</artifactId>-->
+<!--			<version>1.7</version>-->
+<!--			<scope>system</scope>-->
+<!--			<systemPath>${JAVA_HOME}/lib/tools.jar</systemPath>-->
+<!--		</dependency>-->
 
 		<dependency>
 			<groupId>junit</groupId>
@@ -172,12 +171,14 @@
 			<artifactId>maven-compiler-plugin</artifactId>
 			<version>2.1</version>
 			<configuration>
-				<source>1.7</source>
-				<target>1.7</target>
+				<source>1.8</source>
+				<target>1.8</target>
+<!--				<compilerArguments>-->
+<!--					<bootclasspath>${JAVA_HOME}/jre/lib/rt.jar</bootclasspath>-->
+<!--				</compilerArguments>-->
+
 			</configuration>
-			<compilerArguments>
-				<bootclasspath>${JAVA_HOME}/jre/lib/rt.jar</bootclasspath>
-			</compilerArguments>
+
 		</plugin>
 	</plugins>
 </build>
