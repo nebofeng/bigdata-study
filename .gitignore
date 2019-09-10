@@ -4,5 +4,6 @@
 .idea
 /out/
 target
-/hadoop-common-utils/src/main/resources/hostsetting.properties
-/bigdata-spark/src/main/resources/kafkaconfig.properties
+bigdata-common-utils/src/main/resources/setting.properties
+bigdata-spark/src/main/resources/kafkaconfig.properties
+
