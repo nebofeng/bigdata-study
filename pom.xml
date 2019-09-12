@@ -15,6 +15,7 @@
 		<module>bigdata-spark</module>
         <module>bigdata-hbase</module>
         <module>bigdata-elasticsearch</module>
+        <module>bigdata-zookeeper</module>
 
 
     </modules>
@@ -132,6 +133,12 @@
 			<scope>provided</scope>
 			 
 		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+		</dependency>
 		 
 
 
@@ -158,7 +165,12 @@
 			<artifactId>zkclient</artifactId>
 			<version>0.8</version>
 		</dependency>
-		
+		<dependency>
+			<groupId>pers.nebo.bigdata-study</groupId>
+			<artifactId>bigdata-common-utils</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
 		<!--<dependency>-->
         <!--<groupId>org.apache.curator</groupId>-->
         <!--<artifactId>curator-recipes</artifactId>-->
