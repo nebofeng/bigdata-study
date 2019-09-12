@@ -14,6 +14,7 @@
 		<module>bigdata-hive</module>
 		<module>bigdata-spark</module>
         <module>bigdata-hbase</module>
+        <module>bigdata-elasticsearch</module>
 
 
     </modules>
