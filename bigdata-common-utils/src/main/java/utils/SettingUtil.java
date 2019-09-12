@@ -14,12 +14,11 @@ public class SettingUtil {
         String value = null;
         try {
 
-               InputStream path= SettingUtil.class.getResourceAsStream("/hostsetting.properties");
+               InputStream path= SettingUtil.class.getResourceAsStream("/"+filename);
                System.out.println(path);
                 prop.load( path);
-              // prop.load(new FileInputStream("../../hostsetting.properties"));
-               value = prop.getProperty("txynebo19092");
-            //E:\Projects\hadoop-study\common_utils\src\main\resources\hostsetting.properties
+               value = prop.getProperty(key);
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
