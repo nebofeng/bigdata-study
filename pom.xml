@@ -14,6 +14,7 @@
 		<module>bigdata-hive</module>
 		<module>bigdata-spark</module>
         <module>bigdata-hbase</module>
+        <module>bigdata-elasticsearch</module>
         <module>bigdata-zookeeper</module>
 
 
@@ -169,7 +170,7 @@
 			<artifactId>bigdata-common-utils</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		
+
 		<!--<dependency>-->
         <!--<groupId>org.apache.curator</groupId>-->
         <!--<artifactId>curator-recipes</artifactId>-->
