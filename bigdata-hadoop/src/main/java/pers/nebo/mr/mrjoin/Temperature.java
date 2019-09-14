@@ -1,4 +1,4 @@
-package main.mrjoin;
+package pers.nebo.mr.mrjoin;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
@@ -86,7 +86,7 @@ public class Temperature extends Configured implements Tool{
 		// TODO Auto-generated method stub
 		//第一步  读取配置文件
 		Configuration conf = new Configuration()  ;
-		conf.set();
+		conf.set(""," ");
 		
 		
 		Path myPath =  new Path(args[1]);

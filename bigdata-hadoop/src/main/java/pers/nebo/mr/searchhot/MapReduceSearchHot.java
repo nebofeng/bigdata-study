@@ -1,5 +1,5 @@
+package pers.nebo.mr.searchhot;
 import java.io.IOException;
-
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.FileSystem;
@@ -82,7 +82,6 @@ public class MapReduceSearchHot extends Configured implements Tool {
 		  
 
 	public int run(String[] args) throws Exception {
-		// TODO Auto-generated method stub
 		
 		Configuration conf = new Configuration();//读取配置文件
 		
