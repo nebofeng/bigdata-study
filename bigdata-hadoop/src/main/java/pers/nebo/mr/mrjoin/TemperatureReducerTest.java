@@ -1,4 +1,4 @@
-package main.mrjoin;
+package pers.nebo.mr.mrjoin;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;

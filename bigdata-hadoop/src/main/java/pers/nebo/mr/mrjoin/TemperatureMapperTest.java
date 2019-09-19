@@ -1,4 +1,6 @@
-import main.mrjoin.Temperature;
+package pers.nebo.mr.mrjoin;
+
+import pers.nebo.mr.mrjoin.Temperature;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
