@@ -1,6 +1,9 @@
 package pers.nebo.scala.exam
 
+
+
 /***
+ *
   * @author  fnb
   * @email  nebofeng@gmail.com
   * @date 2018/12/16
@@ -17,6 +20,7 @@ object Exam1 {
 //  1.现在有一个字符串”fghjkl”，请使用scala语言获取字符串的首字符和尾字符？
   def  mothed1(s:String):Unit={
     println(s.charAt(0))
+
     println(s.charAt(s.length-1))
 
   }
