@@ -108,7 +108,7 @@ public class FSEditLog {
         /**
          * 把数据写到磁盘上面
          * 比较慢的
-         * 经常几十毫秒 几百毫毛
+         * 经常几十毫秒 几百毫秒
          */
         public void flush() {
             for (EditLog editLog : syncBuffer) {
