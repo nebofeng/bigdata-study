@@ -1,4 +1,4 @@
-package pers.nebo.hdfs.hdfs_utils;
+package pers.nebo.hdfs.hdfsutils;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataOutputStream;
