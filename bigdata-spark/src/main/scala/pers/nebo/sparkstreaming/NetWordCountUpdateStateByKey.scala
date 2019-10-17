@@ -53,6 +53,6 @@ object NetWordCountUpdateStateByKey {
       Some(currentCount+count);
 
    })
-    wordcount.mapWithState()
+//    wordcount.mapWithState()
   }
 }
