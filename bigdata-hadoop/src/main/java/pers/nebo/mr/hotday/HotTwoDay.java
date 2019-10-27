@@ -186,8 +186,8 @@ public class HotTwoDay {
         Job job=Job.getInstance(conf);
         job.setJarByClass(HotTwoDay.class);
         //3,input,output
-        Path input =new Path("");
-        Path output = new Path("");
+        Path input =new Path("/DATA/hotday.txt");
+        Path output = new Path("/DATA/hotdayout");
         FileInputFormat.addInputPath(job,input);
         if(output.getFileSystem(conf).exists(output)){
             output.getFileSystem(conf).delete(output,true);
