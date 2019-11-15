@@ -1,4 +1,4 @@
-package pers.nebo.zookeeper.lock;
+package pers.nebo.lock;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;

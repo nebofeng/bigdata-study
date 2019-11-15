@@ -1,4 +1,4 @@
-package pers.nebo.zookeeper.curd;
+package pers.nebo.curd;
 
 import org.apache.log4j.Logger;
 import org.apache.zookeeper.*;

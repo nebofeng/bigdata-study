@@ -1,4 +1,4 @@
-package pers.nebo.zookeeper.curator;
+package pers.nebo.curator;
 
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
