@@ -80,10 +80,13 @@ object Lession_Function {
     //
     //    println(fun(100,200))
     //
-    //    var fun1: String => Unit = (s: String) => {
-    //      println(s)
-    //    }
-    //    fun1("hello")
+    // String => Unit 表示输入的返回值  unit可以根据实际返回值自己推断，所以可以是函数
+//        var fun1: String => Unit = (s: String) => {
+//          println(s)
+//        }
+//        fun1("hello")
+
+
 
     /**
       * 6.嵌套方法
