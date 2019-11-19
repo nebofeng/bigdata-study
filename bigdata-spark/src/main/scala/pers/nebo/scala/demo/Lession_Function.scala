@@ -165,6 +165,8 @@ object Lession_Function {
 
     /**
       * 9.柯里化函数
+      * 柯里化函数的使用与意义
+      *  https://blog.csdn.net/qq_39207948/article/details/80593715
       */
     //    def fun(a:Int,b:Int)(c:Int,d:Int)={
     //      a+b+c+d
