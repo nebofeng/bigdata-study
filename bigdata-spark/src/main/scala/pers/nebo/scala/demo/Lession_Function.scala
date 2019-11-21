@@ -66,6 +66,7 @@ object Lession_Function {
     //    }
     //
     //    fun("hello","a","b","c")
+
     /**
       * 5.匿名函数
       *  “=>”就是匿名函数，多用于方法的参数是函数时，常用匿名函数
@@ -74,9 +75,14 @@ object Lession_Function {
     //    def fun1(a:Int,b:Int) ={
     //      a+b
     //    }
-    //    def fun:(Int,Int)=>Int = (a:Int,b:Int)=>{
-    //        a+b
-    //    }
+
+//        val fun1= (a:Int,b:Int) => {
+//          a+b
+//        }
+//
+//        def fun:(Int,Int)=>Int = (a:Int,b:Int)=>{
+//            a+b
+//        }
     //
     //    println(fun(100,200))
     //
