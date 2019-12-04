@@ -7,6 +7,9 @@ import org.apache.spark.{SparkConf, SparkContext}
   * @ email nebofeng@gmail.com
   * @ date  2019/8/19
   * @ des : RDD2DataFrameReflection
+  *
+  * 通过反射的方式： 1. 首先将rdd 转为自定义类型RDD
+  *               2. 再使用rdd.toDF()
   */
 case class PersonScala(age:Int,name:String)
 
