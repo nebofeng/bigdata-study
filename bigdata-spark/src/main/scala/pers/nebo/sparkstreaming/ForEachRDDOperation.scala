@@ -21,9 +21,15 @@ object ForEachRDDOperation {
       .map { word => (word,1) }
       .reduceByKey(_+_)
 
+    /**
+      * foreach rdd
+      * 1. 一定要有action 不然不执行
+      * 2. 内部拿到的rdd的transformation 外部 是在driver端执行的，可以利用这个特点改变广播变量
+      * （从外部读取）
+      */
     wordcountDS.foreachRDD( partitionOfRecords =>{
 
-
+          // driver  端 run
       partitionOfRecords.foreachPartition( records =>{
 
 
@@ -44,5 +50,6 @@ object ForEachRDDOperation {
     ssc.start()
 
     ssc.awaitTermination()
+
   }
 }
