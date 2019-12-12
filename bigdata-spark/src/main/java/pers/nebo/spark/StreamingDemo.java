@@ -37,7 +37,7 @@ public class StreamingDemo {
 		streamingContext.start();
 		try {
 			streamingContext.awaitTermination();
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

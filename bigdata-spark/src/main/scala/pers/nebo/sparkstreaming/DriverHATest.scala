@@ -26,7 +26,7 @@ object DriverHATest {
     }
 
     val conf=new SparkConf()
-    val ssc = StreamingContext.getOrCreate(checkpointDirectory, functionToCreateContext _)
+    val ssc = StreamingContext.getOrCreate(checkpointDirectory, functionToCreateContext)
 
     ssc.checkpoint(checkpointDirectory)
 
