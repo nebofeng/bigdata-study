@@ -23,6 +23,17 @@ object NetWordCountUpdateStateByKey {
       */
     val  ssc=new StreamingContext(conf,Seconds(2));
 
+/**
+  * 根据key更新状态，需要设置 checkpoint来保存状态
+  * 默认key的状态在内存中 有一份，在checkpoint目录中有一份。
+  *
+  *    多久会将内存中的数据（每一个key所对应的状态）写入到磁盘上一份呢？
+  * 	      如果你的batchInterval小于10s  那么10s会将内存中的数据写入到磁盘一份
+  * 	      如果bacthInterval 大于10s，那么就以bacthInterval为准
+  *
+  *    这样做是为了防止频繁的写HDFS
+  */
+
     ssc.checkpoint(".")
     val fileDS=ssc.socketTextStream("hadoop1", 9999)
     val wordcount=fileDS.flatMap { line => line.split("\t") }
@@ -50,6 +61,8 @@ object NetWordCountUpdateStateByKey {
     wordcount.updateStateByKey((values:Seq[Int],state:Option[Int]) =>{
       val currentCount= values.sum;  //获取此次本单词出现的次数
       val count=state.getOrElse(0);//获取上一次的结果 也就是中间状态
+
+      //updateStatebykey要求返回一个option some是option的子类。 这里保存到checkpoint里面
       Some(currentCount+count);
 
    })
