@@ -34,7 +34,9 @@ object OverFunctionOnHive {
     result.write.mode(SaveMode.Append).saveAsTable("result")
     result.show(100)
 
-
+    /**
+      * MYSQL 高版本开窗函数使用语句也是这样
+      */
 
   }
 
