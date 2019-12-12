@@ -68,7 +68,7 @@ public class TransformBlackList {
         jssc.start();
         try {
             jssc.awaitTermination();
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         jssc.stop();
