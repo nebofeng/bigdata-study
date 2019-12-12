@@ -8,7 +8,7 @@ package pers.nebo.scala.demo
   */
 
 /**
-  * 偏函数，只能匹配一个值，匹配上了放回某个值
+  * 偏函数，只能匹配一个值，匹配上了返回某个值
   * PartialFunction[A,B]  A是匹配的类型，B是匹配上返回的类型
   */
 object Lession_PartialFun {
