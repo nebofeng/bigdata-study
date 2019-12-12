@@ -69,7 +69,7 @@ object TransformBlackListScala {
     })
 
     /**
-      * 数据量大的话，使用rdd, 格式为 名字 ，true
+      * 数据量大的话，使用rdd, 格式为 （名字 ，true）
       *
       * 使用rdd  leftoutjoin来处理
       */
