@@ -1,17 +1,11 @@
-package pers.nebo.sparksql
+package pers.nebo.sparksql.udf_udaf
 
-import org.apache.spark.{SparkConf, SparkContext}
-import org.apache.spark.sql.{Row, SparkSession}
 import org.apache.spark.sql.expressions.{MutableAggregationBuffer, UserDefinedAggregateFunction}
 import org.apache.spark.sql.hive.HiveContext
-import org.apache.spark.sql.types.{DataType, DoubleType, IntegerType, StructField, StructType}
+import org.apache.spark.sql.types._
+import org.apache.spark.sql.{Row, SparkSession}
+import org.apache.spark.{SparkConf, SparkContext}
 
-/**
-  * @ author fnb
-  * @ email nebofeng@gmail.com
-  * @ date  2019/8/23
-  * @ des :
-  */
 /**
   * 思考：
   * 想计算工资的平均值。
@@ -45,6 +39,9 @@ object UDAFDemo  extends UserDefinedAggregateFunction{
   }
   /**
     * 对于参数计算的值进行初始化
+    *  两个部分的初始化，
+    *  1. 在 map、端每个rdd分区内， 在rdd 每个分区内，按照group by 的字段分组，每个分组都有一个初始化的值
+    *  2.  在reduce 每个初始化
     */
   def initialize(buffer: MutableAggregationBuffer): Unit = {
     buffer.update(0, 0.0)
@@ -58,6 +55,7 @@ object UDAFDemo  extends UserDefinedAggregateFunction{
   )
   /**
     * 进行全局的统计
+    * 最后merge时，在各个节点上的聚合值，要进行merge ，也就是聚合
     */
   def merge(buffer1: MutableAggregationBuffer,buffer2:Row): Unit = {
     val total1= buffer1.getDouble(0);
@@ -69,6 +67,7 @@ object UDAFDemo  extends UserDefinedAggregateFunction{
   }
   /**
     * 修改中间状态的值
+    * 每个组，有新的值进来的时候，进行分组对应的聚合值计算
     */
   def update(buffer: MutableAggregationBuffer,input:Row): Unit ={
     val total= buffer.getDouble(0);

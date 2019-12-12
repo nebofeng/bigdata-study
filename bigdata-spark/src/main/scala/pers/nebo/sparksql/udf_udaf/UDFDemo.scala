@@ -1,8 +1,8 @@
-package pers.nebo.sparksql
+package pers.nebo.sparksql.udf_udaf
 
-import org.apache.spark.sql.SparkSession
-import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.hive.HiveContext
+import org.apache.spark.sql.{DataFrame, SparkSession}
+import org.apache.spark.{SparkConf, SparkContext}
 
 /**
   * @ author fnb
@@ -42,6 +42,18 @@ object UDFDemo {
         0
       }
     })
+
+
+    val nameList:List[String] =List[String]("demo1","demo2","demo3")
+    import spark.implicits._
+    val nameDF: DataFrame = nameList.toDF("name")
+    nameDF.createOrReplaceTempView("students")
+    spark.udf.register("STRLEN",(n:String)=>{
+           n.length
+
+    })
+
+    spark.sql("select name ,STREN(name) as length from students sort by length desc ").show(100)
   }
 
 }
