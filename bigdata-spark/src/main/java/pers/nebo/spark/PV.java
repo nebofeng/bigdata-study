@@ -23,12 +23,10 @@ public class PV {
 		sc.setLogLevel("WARN");
 		count(sc);
  	}
-
- 	//park 求出 最高气温
+ 	//Spark 求出 最高气温
  	static void  year_max(JavaSparkContext sc){
 		//数据集rdd
 		JavaRDD<String>  dataRdd = sc.textFile("file:///E://tmp//a.txt");
-
 		JavaPairRDD<String ,Integer> urlAndOne = dataRdd.filter(new Function<String, Boolean>() {
 			public Boolean call(String s) throws Exception {
 				return (s.split("/").length>10);
@@ -68,27 +66,26 @@ public class PV {
 		}).mapToPair((String s)->{  return  new Tuple2(s.split("/")[0],"1");});
 
 
-
-
-
-
-
+		//log 解析为 URL 1 的格式
 		JavaPairRDD<String ,Integer> urlAndOne2 = dataRdd.filter( (String s)-> { return s.split("/").length>10; } )
 				.mapToPair(new PairFunction<String, String, Integer>(){
 
-			public Tuple2<String, Integer> call(String s) {
-				return new Tuple2(s.split("/")[0],1);
-			}
+			       public Tuple2<String, Integer> call(String s) {
+
+			       	return new Tuple2(s.split("/")[0],1);
+			     }
 		});
 
 		return (Map<String, Integer>) urlAndOne.reduceByKey(new Function2<Integer, Integer, Integer>() {
 			public Integer call(Integer integer, Integer integer2) throws Exception {
 				return integer+integer2;
 			}
+		//key value 反转 方便后面排序
 		}).mapToPair(new PairFunction<Tuple2<String,Integer>, Integer, String>() {
-			public Tuple2<Integer, String> call(Tuple2<String, Integer> stringIntegerTuple2) {
-				return null;
+			public Tuple2<Integer, String> call(Tuple2<String, Integer> v1) {
+				return new Tuple2<>(v1._2,v1._1);
 			}
+		//排序，自定义比较器大的在前面
 		}).sortByKey().top(5, new Comparator<Tuple2<Integer, String>>() {
 			public int compare(Tuple2<Integer, String> o1, Tuple2<Integer, String> o2) {
 				if(o1._1>o2._1){
