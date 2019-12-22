@@ -8,13 +8,7 @@ import org.apache.hadoop.hbase.CellUtil;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.TableName;
-import org.apache.hadoop.hbase.client.Get;
-import org.apache.hadoop.hbase.client.HBaseAdmin;
-import org.apache.hadoop.hbase.client.HTable;
-import org.apache.hadoop.hbase.client.Put;
-import org.apache.hadoop.hbase.client.Result;
-import org.apache.hadoop.hbase.client.ResultScanner;
-import org.apache.hadoop.hbase.client.Scan;
+import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.After;
 import org.junit.Before;
@@ -37,8 +31,9 @@ public class HBaseDemo {
 	public void init() throws Exception{
 		Configuration conf = new Configuration();
 		conf.set("hbase.zookeeper.quorum", "node1,node2,node3");
-		admin = new HBaseAdmin(conf);
-		table = new HTable(conf,tm.getBytes());
+		Connection conn =ConnectionFactory.createConnection(conf);
+		admin = (HBaseAdmin) conn.getAdmin();
+		table = (HTable) conn.getTable(TableName.valueOf(tm));
 	}
 
 	/**
@@ -52,9 +47,9 @@ public class HBaseDemo {
 		//列族的描述类
 		HColumnDescriptor family = new HColumnDescriptor("cf".getBytes());
 		desc.addFamily(family);
-		if(admin.tableExists(tm)){
-			admin.disableTable(tm);
-			admin.deleteTable(tm);
+		if(admin.tableExists(TableName.valueOf(tm))){
+			admin.disableTable(TableName.valueOf(tm));
+			admin.deleteTable(TableName.valueOf(tm));
 		}
 		admin.createTable(desc);
 	}
@@ -62,9 +57,9 @@ public class HBaseDemo {
 	@Test
 	public void insert() throws Exception{
 		Put put = new Put("1111".getBytes());
-		put.add("cf".getBytes(), "name".getBytes(), "zhangsan".getBytes());
-		put.add("cf".getBytes(), "age".getBytes(), "12".getBytes());
-		put.add("cf".getBytes(), "sex".getBytes(), "man".getBytes());
+		put.addColumn("cf".getBytes(), "name".getBytes(), "zhangsan".getBytes());
+		put.addColumn("cf".getBytes(), "age".getBytes(), "12".getBytes());
+		put.addColumn("cf".getBytes(), "sex".getBytes(), "man".getBytes());
 		table.put(put);
 	}
 	@Test

@@ -28,7 +28,7 @@ public class WCReducer extends TableReducer<Text, IntWritable, ImmutableBytesWri
             sum+=intWritable.get();
         }
         Put put = new Put(key.toString().getBytes());
-        put.add("cf".getBytes(), "cf".getBytes(), String.valueOf(sum).getBytes());
+        put.addColumn("cf".getBytes(), "cf".getBytes(), String.valueOf(sum).getBytes());
         context.write(null, put);
     }
 }

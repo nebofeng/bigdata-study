@@ -56,7 +56,7 @@ public class IndexBuilder {
                 byte[] val = value.getValue(Bytes.toBytes(familyName), k);
                 if (val != null) {
                     Put put = new Put(val);
-                    put.add(Bytes.toBytes("f1"), Bytes.toBytes("id"), key.get());
+                    put.addColumn(Bytes.toBytes("f1"), Bytes.toBytes("id"), key.get());
                     context.write(indexTableName, put);
                 }
             }

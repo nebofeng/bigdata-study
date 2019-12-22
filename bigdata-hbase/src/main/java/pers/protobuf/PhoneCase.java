@@ -12,13 +12,7 @@ import org.apache.hadoop.hbase.CellUtil;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.TableName;
-import org.apache.hadoop.hbase.client.Get;
-import org.apache.hadoop.hbase.client.HBaseAdmin;
-import org.apache.hadoop.hbase.client.HTable;
-import org.apache.hadoop.hbase.client.Put;
-import org.apache.hadoop.hbase.client.Result;
-import org.apache.hadoop.hbase.client.ResultScanner;
-import org.apache.hadoop.hbase.client.Scan;
+import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.filter.CompareFilter.CompareOp;
 import org.apache.hadoop.hbase.filter.FilterList;
 import org.apache.hadoop.hbase.filter.PrefixFilter;
@@ -37,9 +31,9 @@ import pers.protobuf.Phone;
 public class PhoneCase {
 
 	// 表的管理类
-	HBaseAdmin admin = null;
+	Admin admin = null;
 	// 数据的管理类
-	HTable table = null;
+	Table table = null;
 	// 表名
 	String tm = "phone";
 
@@ -52,8 +46,9 @@ public class PhoneCase {
 	public void init() throws Exception {
 		Configuration conf = new Configuration();
 		conf.set("hbase.zookeeper.quorum", "node1,node2,node3");
-		admin = new HBaseAdmin(conf);
-		table = new HTable(conf, tm.getBytes());
+		Connection conn=ConnectionFactory.createConnection(conf);
+		admin = conn.getAdmin();
+		table = conn.getTable(TableName.valueOf(tm));
 	}
 
 	/**
@@ -68,9 +63,9 @@ public class PhoneCase {
 		// 列族的描述类
 		HColumnDescriptor family = new HColumnDescriptor("cf".getBytes());
 		desc.addFamily(family);
-		if (admin.tableExists(tm)) {
-			admin.disableTable(tm);
-			admin.deleteTable(tm);
+		if (admin.tableExists(TableName.valueOf(tm))) {
+			admin.disableTable(TableName.valueOf(tm));
+			admin.deleteTable(TableName.valueOf(tm));
 		}
 		admin.createTable(desc);
 	}
@@ -97,10 +92,10 @@ public class PhoneCase {
 				// rowkey设计
 				String rowkey = phoneNumber + "_" + (Long.MAX_VALUE - sdf.parse(date).getTime());
 				Put put = new Put(rowkey.getBytes());
-				put.add("cf".getBytes(), "dnum".getBytes(), dnum.getBytes());
-				put.add("cf".getBytes(), "length".getBytes(), length.getBytes());
-				put.add("cf".getBytes(), "type".getBytes(), type.getBytes());
-				put.add("cf".getBytes(), "date".getBytes(), date.getBytes());
+				put.addColumn("cf".getBytes(), "dnum".getBytes(), dnum.getBytes());
+				put.addColumn("cf".getBytes(), "length".getBytes(), length.getBytes());
+				put.addColumn("cf".getBytes(), "type".getBytes(), type.getBytes());
+				put.addColumn("cf".getBytes(), "date".getBytes(), date.getBytes());
 				puts.add(put);
 			}
 		}
@@ -207,7 +202,7 @@ public class PhoneCase {
 				String rowkey = phoneNumber+"_"+(Long.MAX_VALUE-sdf.parse(date).getTime());
 
 				Put put = new Put(rowkey.getBytes());
-				put.add("cf".getBytes(), "phoneDetail".getBytes(), phoneDetail.build().toByteArray());
+				put.addColumn("cf".getBytes(), "phoneDetail".getBytes(), phoneDetail.build().toByteArray());
 				puts.add(put);
 			}
 		}
@@ -248,7 +243,7 @@ public class PhoneCase {
 				dayOfPhone.addDayPhone(phoneDetail);
 			}
 			Put put = new Put(rowkey.getBytes());
-			put.add("cf".getBytes(), "day".getBytes(), dayOfPhone.build().toByteArray());
+			put.addColumn("cf".getBytes(), "day".getBytes(), dayOfPhone.build().toByteArray());
 			puts.add(put);
 		}
 		table.put(puts);
