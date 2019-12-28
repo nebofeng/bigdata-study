@@ -62,7 +62,7 @@ public class KafkaWordCount {
         JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(5));
         jssc.checkpoint("E:/TEMP");
 
-        JavaInputDStream<ConsumerRecord<String, String>> lines = KafkaUtils.createDirectStream(
+         JavaInputDStream<ConsumerRecord<String, String>> lines = KafkaUtils.createDirectStream(
                 jssc,
                 LocationStrategies.PreferConsistent(),
                 ConsumerStrategies.<String, String>Subscribe(topicSet, kafkaParams)
