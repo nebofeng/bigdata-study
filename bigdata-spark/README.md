@@ -11,6 +11,8 @@ spark core
 
 * 编程例子
 
+    * [Accumulator-累加器的简单使用及注意事项](https://blog.csdn.net/JustClimbing/article/details/103755500)
+
     * [PV、UV 编程例子](https://blog.csdn.net/JustClimbing/article/details/103248261)
 
 spark sql
