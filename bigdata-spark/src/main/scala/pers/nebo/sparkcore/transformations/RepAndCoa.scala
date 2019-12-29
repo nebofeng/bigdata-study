@@ -1,8 +1,4 @@
-package pers.nebo.sparkcore.transformation
-
-import org.apache.spark.{SparkConf, SparkContext}
-
-import scala.collection.mutable.ListBuffer
+package pers.nebo.sparkcore.transformations
 
 /**
   * @ author fnb

@@ -1,4 +1,4 @@
-package pers.nebo.sparkcore.transformation
+package pers.nebo.sparkcore.transformations
 
 import org.apache.spark.{SparkConf, SparkContext}
 
