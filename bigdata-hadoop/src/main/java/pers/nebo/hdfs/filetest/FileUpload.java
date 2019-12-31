@@ -15,16 +15,13 @@ public class FileUpload {
     File[] files;
     static ExecutorService exe = Executors.newCachedThreadPool();
 
-
-
-
     public static void main(String []args) throws InterruptedException{
 
         String localFilePath= "D:\\SoftWareInstall";
-//        long startTime=System.currentTimeMillis();   //获取开始时间
-//          iteratorPath(localFilePath);
-//          exe.shutdown();
-//         while (true) {
+//      long startTime=System.currentTimeMillis();   //获取开始时间
+//      iteratorPath(localFilePath);
+//      exe.shutdown();
+//      while (true) {
 //            if (exe.isTerminated()) {
 //                System.out.println("结束了！");
 //                break;
@@ -39,34 +36,9 @@ public class FileUpload {
 
 //        long startTime2=System.currentTimeMillis();   //获取开始时间
 //        iteratorPath2(localFilePath);
-//
 //        long endTime2=System.currentTimeMillis(); //获取结束时间
-//
 //        System.out.println("单线程程序运行时间： "+(endTime2-startTime2)+"ms");
 
-
-
-
-
-
-
-
-        // 递归遍历文件夹
-
-
-
-          //如果是文件夹 ， hdfs上新建文件夹  ，
-        //   开启多线程池     开始继续遍历
-        //   如果是文件     文件目录/文件名。
-        //放入到 队列中 。
-
-        //这是生产者
-
-
-
-        //消费者 ，
-        //从消费队列中获取 。
-        //然后开始
 
     }
 
@@ -144,18 +116,13 @@ public class FileUpload {
                   //上传或者放到别的容器中
               } else{//是一个文件夹 。
                   MyThread newThread = new MyThread(file);
-                // Thread thread = new Thread(newThread);
                   exe.execute(newThread);
-                //newThread.start();
               }
 
            }
-
        }else{//dir是空文件夹或者是一个文件 。
-
            if(or.isDirectory()){//如果是个文件夹则说明 文件夹为空
               //新建文件夹
-
            }else{//说明这是一个文件
              //将文件 上传到hdfs中 。
                System.out.println(or.getAbsolutePath());
@@ -195,8 +162,6 @@ public class FileUpload {
         }
 
 
-
-
     public static  void iteratorPath3(String dir) {
         System.out.println(dir);
         File or=new File(dir);
@@ -217,7 +182,6 @@ public class FileUpload {
 
             if(or.isDirectory()){//如果是个文件夹则说明 文件夹为空
                 //新建文件夹
-
             }else{//说明这是一个文件
                 //将文件 上传到hdfs中 。
                 System.out.println(or.getAbsolutePath());
@@ -235,4 +199,4 @@ public class FileUpload {
         }
     }
 
-    }
+}

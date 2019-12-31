@@ -21,7 +21,6 @@ public class TestCharSet {
 
     static {
         try {
-
             conf.set("fs.hdfs.impl", "org.apache.hadoop.hdfs.DistributedFileSystem");
             uri = new URI(hdfsPath);
             fs = FileSystem.get(uri, conf);
@@ -36,11 +35,8 @@ public class TestCharSet {
         File file = new File("E:\\TestData\\我的.txt");
         String uploadPath ="/home/nebo/demo.txt";
         Path dstPath = new Path(hdfsPath+uploadPath);//目标路径
-
-
         try {
             FSDataOutputStream outputStream = fs.create(dstPath);
-
             FileInputStream  fr= new FileInputStream(file);
             BufferedReader bf = new BufferedReader(new InputStreamReader(fr,"GBK"));
             String line =null;
@@ -54,7 +50,6 @@ public class TestCharSet {
             if(outputStream!=null){
                 outputStream.close();
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }

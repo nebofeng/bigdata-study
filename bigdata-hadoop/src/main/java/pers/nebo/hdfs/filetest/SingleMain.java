@@ -56,12 +56,17 @@ public class SingleMain {
 
         uploadPreHdfs =  args[2].trim();//hdfs前缀目录
         File srcFolder = new File(args[3]);
-         srcFolderNameSpace = srcFolder.getCanonicalPath();//获取绝对路径 ，该路径后面的文件整体上上传到hdfs的目录下面 。
+        srcFolderNameSpace = srcFolder.getCanonicalPath();//获取绝对路径 ，该路径后面的文件整体上上传到hdfs的目录下面 。
         String filePath = srcFolderNameSpace;
         long startTime=System.currentTimeMillis();   //获取开始时间
         int coreSize;
-        coreSize=  Integer.parseInt(args[1]);//Runtime.getRuntime().availableProcessors()*2+1;//io密集的 程序为2n+1 ,n为 cpu个数 ，cpu密集则为 n+1
-            // n*（x+y）/x  本机计算时间为x ，等待时间为y  ;
+        coreSize=  Integer.parseInt(args[1]);
+        /*
+          线程设置推荐个数
+          Runtime.getRuntime().availableProcessors()*2+1;//io密集的 程序为2n+1 ,n为 cpu个数 ，
+          cpu密集则为 n+1// n*（x+y）/x  本机计算时间为x ，等待时间为y
+
+        */
 
         List<File> fileArrayList = new ArrayList<File>();
         ExecutorService exe = Executors.newFixedThreadPool(coreSize);
@@ -69,7 +74,7 @@ public class SingleMain {
         if (fileArrayList.size() < coreSize) {
             coreSize = fileArrayList.size();
         }
-       System.out.println("线程个数： ======="+coreSize+"        文件个数 ：====" +fileArrayList.size());
+        System.out.println("线程个数： ======="+coreSize+"        文件个数 ：====" +fileArrayList.size());
         int threadDealSize = fileArrayList.size() / coreSize;//不会等于零 。文件数目不会小于 。
         int moreSize = fileArrayList.size() % coreSize; //剩余不够平均分配的条件数据。
         int start = 0;
@@ -110,8 +115,6 @@ public class SingleMain {
      */
     public static void CreateFile(String dst, String src) throws IOException {
 
-//        FileInputStream fis = null;
-//        fis = new FileInputStream(src);
         BufferedReader bf = new BufferedReader(new FileReader(new File(src)));
         String line = null;
         StringBuilder sb = new StringBuilder();
@@ -248,8 +251,8 @@ public class SingleMain {
             String nameSpace = "/"+fileName.substring(0,4)+"/"+fileName.substring(4,6)+"/"+fileName.substring(6,8)
                              +"/"+fileName.substring(8,10)+"/" ;//文件分到小时 。
 
-            //linux 文件 目录，  /home/nebo/sdk_ros_ir/
-         //   src.getCanonicalPath()
+            //linux 文件 目录，  /home/nebo/xxx_xxx_xxx/
+           //   src.getCanonicalPath()
 
             //文件本地目录 的前缀 。这里因为是已经处理过的log文件再次上传。所以指定目录的层次  。
             String prNameSpace = src.getAbsolutePath().split("/")[4];
@@ -268,10 +271,9 @@ public class SingleMain {
 
                 }
                 oldBf.close();
-                //   outputStream.write("结束处理===》end".getBytes());
+                //    .write("结束处理===》end".getBytes());
                 //此时的流程。先读取文件内容 。然后根据内容设置文件目录 。在读取内容 。 此时sb是内容的字符串形式 。
             }
-
 
             if (outputStream != null) {
                 try {
@@ -286,7 +288,7 @@ public class SingleMain {
         } else if(src.isDirectory()){//是个文件夹 。直接创建文件夹
             dst = dst+src.getAbsolutePath().split(srcFolderNameSpace)[1];
             if (!fs.exists(new Path(dst))) {
-                //文件夹创建的目录在 nebo后面 。 /home/nebo/sdk_ros_ir/2018/05/23  hdfs的目录是 ： home/nebo/logdata/sdk_ros_ir/
+                //文件夹创建的目录在 nebo后面 。 /home/nebo/xxx_xxx_xx/2018/05/23  hdfs的目录是 ： home/nebo/logdata/xxx_xx_xx/
                 //
                 fs.mkdirs(new Path(dst));
             }
@@ -294,26 +296,19 @@ public class SingleMain {
     }
 
 
+    /**
+     * 接受一个元素为file 的list，并执行上传逻辑
+     */
 
     static class MyThread extends Thread {
         List<File> file;
-
         MyThread(List<File> file) {
             this.file = file;
         }
-
         public void run() {
             for (int i = 0; i < file.size(); i++) {
                 try {
-//                    if(file.get(i).isDirectory()){
-//                     //   String   dst =uploadPath+"/"+file.get(i).getAbsolutePath().replace("\\","/").replace("E:/","");
-//                        if(!fs.exists(new Path(dst))){
-//                            fs.mkdirs(new Path(dst));
-//                        }
-//                    }else{
-                    //   String   dst =uploadPath+"/"+file.get(i).getAbsolutePath().replace("\\","/").replace("E:/","");
                     CreateFile2(hdfsPath+uploadPreHdfs, file.get(i));
-//                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

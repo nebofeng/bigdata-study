@@ -16,26 +16,14 @@ public class Test {
         Configuration conf =new Configuration();
         conf.set("fs.hdfs.impl", "org.apache.hadoop.hdfs.DistributedFileSystem");
         URI uri = new URI("hdfs://139.199.172.112:9000");
-
         fs = FileSystem.get(uri, conf);
-
         local =fs.getLocal(conf);
-
-
-
-
         //本地文件
-
         Path src =new Path("D:\\test");
-
         //HDFS
 
         Path dst =new Path("hdfs://139.199.172.112:9000/home/");
-
-
-
         fs.copyFromLocalFile(src, dst);
-
         System.out.println("Upload to"+conf.get("fs.default.name"));
 
 

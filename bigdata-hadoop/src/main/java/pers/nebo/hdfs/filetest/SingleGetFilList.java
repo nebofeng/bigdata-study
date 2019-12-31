@@ -3,6 +3,10 @@ package pers.nebo.hdfs.filetest;
 import java.io.File;
 import java.util.ArrayList;
 
+/**
+ *  des ： 获取文件夹下面的文件列表
+ */
+
 public class SingleGetFilList {
     private static ArrayList<File> fileList  = new ArrayList<File>();
 
@@ -12,7 +16,6 @@ public class SingleGetFilList {
      * @return
      */
     public static  ArrayList<File>   getFileList(String filePath){
-
 
     File file = new File(filePath);
         if(!file.isDirectory()){
@@ -30,12 +33,12 @@ public class SingleGetFilList {
             }
         }
         if(files.length==0){//空文件夹
-            fileList.add(file);
+              fileList.add(file);
 
         }
 
     }
-        return fileList;
+    return fileList;
  }
 
 
