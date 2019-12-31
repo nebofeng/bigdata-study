@@ -19,6 +19,18 @@ object UDAFDemo  extends UserDefinedAggregateFunction{
     * 定义缓存字段的名称和数据类型
     */
   def bufferSchema:StructType = StructType(
+    /*
+
+    ::(构造列表)
+
+       用法为x::list,其中x为加入到头部的元素，无论x是列表与否，它都只将成为新生成列表的第一个元素，
+       也就是说新生成的列表长度为list的长度＋1 x::list等价于list.::(x)
+
+        scala> "A"::"B"::Nil
+        res0: List[String] = List(A, B)
+
+       参考链接：https://www.jianshu.com/p/16bc484d0f37
+     */
     StructField("total",DoubleType,true)::StructField("count",IntegerType,true)::Nil
   )
   /**
