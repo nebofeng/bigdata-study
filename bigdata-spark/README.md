@@ -21,7 +21,7 @@ spark sql
 * 编程例子
 
    * [load生成数据到hive](https://github.com/nebofeng/bigdata-study/blob/master/bigdata-spark/src/main/java/pers/nebo/sparksql/loaddata2hive/LoadData2Hive.java)
-   
+   * [UDF、UDAF 例子](https://github.com/nebofeng/bigdata-study/tree/master/bigdata-spark/src/main/scala/pers/nebo/sparksql/udf_udaf)
 
 
 spark streaming
