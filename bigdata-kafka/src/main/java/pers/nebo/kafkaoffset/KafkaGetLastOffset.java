@@ -19,11 +19,17 @@ public class KafkaGetLastOffset {
 
     public static void main(String[] args) {
 
+
+
         Properties props = new Properties();
         props.put("bootstrap.servers", "node1:6667");
         props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 
+        /*
+         method1  参考博客做了一些修改，修改了认为不对的地方。
+         https://www.cnblogs.com/cocowool/p/get_kafka_latest_offset.html
+        */
         KafkaConsumer kafkaConsumer = new KafkaConsumer(props);
         List<TopicPartition> tp =new ArrayList<TopicPartition>();
 
@@ -42,6 +48,10 @@ public class KafkaGetLastOffset {
         }
 
 
+      /*
+        method 2
+        https://blog.csdn.net/chenggongdeli11/article/details/93502206
+      */
 
 
 
