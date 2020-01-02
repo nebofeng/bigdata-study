@@ -1,4 +1,4 @@
-package com.nebo.kafka_study.an2.model;
+package pers.nebo.kafka_study.an2.model;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 

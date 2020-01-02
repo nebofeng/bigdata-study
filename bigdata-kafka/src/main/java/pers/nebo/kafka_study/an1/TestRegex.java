@@ -1,4 +1,4 @@
-package com.nebo.kafka_study.an1;
+package pers.nebo.kafka_study.an1;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

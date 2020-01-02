@@ -1,4 +1,4 @@
-package com.nebo.kafka_study.an1;
+package pers.nebo.kafka_study.an1;
 
 import kafka.consumer.Consumer;
 import kafka.consumer.ConsumerConfig;

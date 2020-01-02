@@ -1,4 +1,4 @@
-package com.nebo.kafka_study.an1;
+package pers.nebo.kafka_study.an1;
 import kafka.javaapi.producer.Producer;
 import kafka.producer.KeyedMessage;
 import kafka.producer.ProducerConfig;
@@ -22,7 +22,7 @@ public class TestProducer    {
 		props.put("metadata.broker.list", "139.199.172.112:9092");
         props.put("zookeeper.connect", "139.199.172.112:2181");
 
-        props.put("partitioner.class", "com.nebo.kafka_study.an1.TestPartitioner");
+        props.put("partitioner.class", "TestPartitioner");
 
 		props.put("request.required.acks", "1");
 

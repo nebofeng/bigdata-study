@@ -1,4 +1,4 @@
-package com.nebo.kafka_study.an2.utils;
+package pers.nebo.kafka_study.an2.utils;
 import com.google.gson.Gson;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonParseException;

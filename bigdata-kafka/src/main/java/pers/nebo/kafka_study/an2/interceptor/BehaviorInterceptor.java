@@ -1,4 +1,4 @@
-package com.nebo.kafka_study.an2.interceptor;
+package pers.nebo.kafka_study.an2.interceptor;
 
 import java.util.List;
 
@@ -7,8 +7,8 @@ import org.apache.flume.Event;
 import org.apache.flume.interceptor.Interceptor;
 
 import com.google.common.collect.Lists;
-import com.nebo.kafka_study.an2.model.UserBehaviorRequestModel;
-import com.nebo.kafka_study.an2.utils.JSONUtil;
+import pers.nebo.kafka_study.an2.model.UserBehaviorRequestModel;
+import pers.nebo.kafka_study.an2.utils.JSONUtil;
 
 /**
  * Created by John on 2017/4/25.
