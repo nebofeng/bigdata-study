@@ -19,7 +19,7 @@ bigdata-hbase
 bigdata-elasticsearch
 ---
 
-bigdata-kafka
+:fallen_leaf:[bigdata-kafka](https://github.com/nebofeng/bigdata-study/tree/master/bigdata-kafka)
 ---
 
 bigdata-hive
