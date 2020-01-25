@@ -1,5 +1,7 @@
 package pers.nebo.sparkcore.transformations
 
+import org.apache.spark.{SparkConf, SparkContext}
+
 /**
   * @ author fnb
   * @ email nebofeng@gmail.com
