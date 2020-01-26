@@ -6,4 +6,4 @@
 target
 bigdata-common-utils/src/main/resources/setting.properties
 bigdata-spark/src/main/resources/kafkaconfig.properties
-
+bigdata-spark/src/main/resources/dev/*
