@@ -16,6 +16,14 @@
             <artifactId>curator-recipes</artifactId>
             <version>4.2.0</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.hadoop/zookeeper -->
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>zookeeper</artifactId>
+            <version>3.3.1</version>
+        </dependency>
+
     </dependencies>
 
 </project>
