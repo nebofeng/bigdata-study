@@ -1,13 +1,11 @@
-package pers.wcdemo;
+package pers.nebo.wcdemo;
 
 
 import javafx.scene.text.Text;
-import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 import org.apache.hadoop.hbase.mapreduce.TableReducer;
 import org.apache.hadoop.io.IntWritable;
-import org.apache.hadoop.mapreduce.Job;
 
 import java.io.IOException;
 

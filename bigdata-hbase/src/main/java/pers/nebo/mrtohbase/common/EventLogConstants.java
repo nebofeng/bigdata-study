@@ -1,4 +1,4 @@
-package pers.mrtohbase.common;
+package pers.nebo.mrtohbase.common;
 
 /**
  * 定义日志收集客户端收集得到的用户数据参数的name名称<br/>

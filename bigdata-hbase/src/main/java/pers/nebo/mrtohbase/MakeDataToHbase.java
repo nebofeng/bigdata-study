@@ -1,4 +1,4 @@
-package pers.mrtohbase;
+package pers.nebo.mrtohbase;
 
 
 import org.apache.commons.lang.StringUtils;
@@ -6,14 +6,12 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
-import pers.mrtohbase.common.EventLogConstants;
+import pers.nebo.mrtohbase.common.EventLogConstants;
 
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
 import java.util.zip.CRC32;
 
 /**

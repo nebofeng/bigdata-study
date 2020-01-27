@@ -1,4 +1,4 @@
-package pers.wcdemo;
+package pers.nebo.wcdemo;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;

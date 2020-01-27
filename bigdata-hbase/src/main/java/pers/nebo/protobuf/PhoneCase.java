@@ -1,7 +1,5 @@
-package pers.protobuf;
+package pers.nebo.protobuf;
 
-import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +19,12 @@ import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import pers.protobuf.Phone.PhoneDetail;
+import pers.nebo.protobuf.Phone.PhoneDetail;
 
-import pers.protobuf.Phone.DayOfPhone;
+import pers.nebo.protobuf.Phone.DayOfPhone;
 
 
-import pers.protobuf.Phone;
+import pers.nebo.protobuf.Phone;
 
 public class PhoneCase {
 

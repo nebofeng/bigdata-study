@@ -1,4 +1,4 @@
-package pers.mrtohbase;
+package pers.nebo.mrtohbase;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;

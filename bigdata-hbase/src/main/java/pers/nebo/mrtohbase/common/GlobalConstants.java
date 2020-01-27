@@ -1,4 +1,4 @@
-package pers.mrtohbase.common;
+package pers.nebo.mrtohbase.common;
 
 /**
  * 全局常量类

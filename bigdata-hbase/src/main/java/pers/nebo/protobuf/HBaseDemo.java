@@ -1,6 +1,4 @@
-package pers.protobuf;
-
-import java.io.IOException;
+package pers.nebo.protobuf;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.Cell;
